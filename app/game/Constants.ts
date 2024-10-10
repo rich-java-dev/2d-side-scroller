@@ -1,6 +1,6 @@
 
-const playerPosition = 500
+const playerScreenPosition = 500
 
 export {
-    playerPosition,
+    playerScreenPosition,
 }
