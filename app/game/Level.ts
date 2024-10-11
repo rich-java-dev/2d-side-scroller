@@ -63,7 +63,7 @@ class Level {
         this.ctx.save()
         this.ctx.translate(-offset / 2, 0)
         this.ctx.fillStyle = this.skyBackground(this.ctx)
-        this.ctx.fillRect(0, 0, this.width*10, this.height)
+        this.ctx.fillRect(-this.width, 0, this.width * 10, this.height)
         this.ctx.restore()
     }
 

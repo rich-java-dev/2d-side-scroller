@@ -21,7 +21,6 @@ class Ground extends Platform {
             this.pattern = ctx.createPattern(image, "repeat");
         }
 
-
         ctx.fillStyle = this.pattern
 
         ctx.fillRect(this.x, this.y, this.width, this.height)

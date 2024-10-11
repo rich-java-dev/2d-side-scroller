@@ -17,9 +17,10 @@ class Player implements GameObject {
     private action: number = 0
     private direction: number = 1
 
-    private hp: number = 3
+    public hp: number = 3
 
     private swordPattern: any = null;
+    private heartPattern: any = null;
 
     public constructor() {
     }
@@ -32,7 +33,6 @@ class Player implements GameObject {
 
         // body
         ctx.fillStyle = "brown"
-        ctx.beginPath();
         ctx.fillRect(playerScreenPosition - this.x - 5, this.y, 10, 50)
 
         // arms
@@ -63,29 +63,43 @@ class Player implements GameObject {
         ctx.fill()
 
 
-        //sword
+        // sword
         if (this.swordPattern == null) {
-            let image = new Image()
+            console.log("Loading Sword")
+            let image = new Image(12, 85)
             image.src = 'images/sword.png'
             this.swordPattern = ctx.createPattern(image, "no-repeat");
         }
-        ctx.beginPath();
         ctx.fillStyle = this.swordPattern
         let rotateAngle = -1.8
 
-        let swordOffset = this.direction == -1 ? 5 : 0
-        ctx.translate(playerScreenPosition - this.x + this.direction * 15 + swordOffset, this.y + 60)
+        let swordOffset = this.direction == -1 ? 5 : -2
+        ctx.translate(playerScreenPosition - this.x + this.direction * 15 + swordOffset, this.y + 60 - swordOffset)
         ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
         ctx.fillRect(0, 0, 12, 85)
 
-        ctx.stroke();
+        // display hearts
+        ctx.restore()
+        if (this.heartPattern == null) {
+            console.log("Loading Heart")
+            let image = new Image(50, 50)
+            image.src = 'images/heart.png'
+            this.heartPattern = ctx.createPattern(image, "repeat");
+        }
+
+        for (let i = 0; i < this.hp; i++) {
+            ctx.fillStyle = this.heartPattern
+            ctx.fillRect((i + 1) * 50, 150, 50, 50)
+            // ctx.stroke()
+        }
+
         ctx.restore();
     }
 
 
     public update = (platforms: Platform[]) => {
 
-        this.vy += 1;
+        this.vy++
         if (this.vy > 18)
             this.vy = 18;
 
@@ -110,6 +124,7 @@ class Player implements GameObject {
             this.y = 100
             this.vy = 0
             this.x = 0
+            this.hp--;
         }
     }
 
@@ -140,7 +155,7 @@ class Player implements GameObject {
 
                     case 32: //space
                         if (this.action == 0) {
-                            this.action += 1;
+                            this.action++
                             this.hitSound()
                         }
                         break;

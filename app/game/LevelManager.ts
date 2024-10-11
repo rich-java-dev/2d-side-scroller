@@ -35,9 +35,9 @@ class LevelManager {
 
     public step = () => {
         if (this.gameOver) {
-            this.ctx.font = "100px Arial";
-            this.ctx.fillStyle = "black"
-            this.ctx.fillText("Thanks for Playing :)", 80, 400);
+            this.ctx.font = "100px Arial bold";
+            this.ctx.fillStyle = "red"
+            this.ctx.fillText("GAME OVER", 180, 400);
             return;
         }
 
@@ -51,7 +51,11 @@ class LevelManager {
                 this.gameOver = true;
                 return;
             }
+        }
 
+        if (this.activeLevel.player.hp <= 0) {
+            this.gameOver = true;
+            return
         }
 
         this.activeLevel.step()
