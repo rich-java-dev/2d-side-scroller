@@ -42,6 +42,7 @@ class LevelManager {
         }
 
         if (this.activeLevel.isCleared()) {
+            this.winSound()
             this.levels.shift()
             this.levelIdx++;
             if (this.levels.length > 0)
@@ -63,6 +64,11 @@ class LevelManager {
 
     public controller = (evt: any) => {
         this.activeLevel.player.controller(evt);
+    }
+
+    public winSound = () => {
+        let audio = new Audio('sounds/win.wav');
+        audio.play();
     }
 
 }

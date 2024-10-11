@@ -19,20 +19,24 @@ class Enemy implements GameObject {
 
     private initialX: number = 0;
 
-    public constructor(x: number, y: number, width: number, height: number, color: string) {
+    public constructor(x: number, y: number, width: number, height: number, color: string, direction: number, vx: number) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
         this.color = color
         this.initialX = x;
+
+        this.direction = direction
+        this.vx = vx
+
     }
 
 
     public draw = (ctx: any, offset: number) => {
         ctx.save()
         ctx.translate(-offset, 0)
-        
+
         // ctx.rotate(this.direction*Math.PI/2);
         ctx.font = "30px Arial";
         ctx.fillStyle = this.color

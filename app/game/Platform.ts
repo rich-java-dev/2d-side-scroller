@@ -21,7 +21,9 @@ class Platform implements GameObject {
     public draw = (ctx: any, offset: number) => {
         ctx.save()
         ctx.translate(-offset, 0)
+
         ctx.fillStyle = this.color
+
         ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.restore()
     }

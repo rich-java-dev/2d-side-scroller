@@ -19,6 +19,8 @@ class Player implements GameObject {
 
     private hp: number = 3
 
+    private swordPattern: any = null;
+
     public constructor() {
     }
 
@@ -27,18 +29,24 @@ class Player implements GameObject {
         ctx.save();
         ctx.translate(this.x, 0)
         ctx.lineWidth = 8;
-        //head
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.arc(playerScreenPosition - this.x, this.y, 25, 0, Math.PI * 2, true); // draw circle for head
-        ctx.fill()
 
         // body
+        ctx.fillStyle = "brown"
         ctx.beginPath();
-
         ctx.fillRect(playerScreenPosition - this.x - 5, this.y, 10, 50)
 
+        // arms
+        ctx.strokeStyle = "brown"
+        ctx.beginPath();
+        ctx.moveTo(playerScreenPosition - this.x, this.y + 10);
+        ctx.lineTo(playerScreenPosition - this.x + 10 + 5 * Math.sin(this.action / 2) + (Math.ceil(Math.abs(this.x)) % 35) / 10, this.y + 60 + 5 * Math.sin(this.action / 2));
+        ctx.moveTo(playerScreenPosition - this.x, this.y + 10);
+        ctx.lineTo(playerScreenPosition - this.x - 10 - 5 * Math.sin(this.action / 2) - (Math.ceil(Math.abs(this.x)) % 35) / 10, this.y + 60 + 5 * Math.sin(this.action / 2));
+        ctx.stroke();
+
+
         // legs
+        ctx.strokeStyle = "blue"
         ctx.beginPath();
         ctx.moveTo(playerScreenPosition - this.x, this.y + 50);
         ctx.lineTo(playerScreenPosition - this.x + 5 + (Math.ceil(Math.abs(this.x)) % 40) / 4, this.y + 100);
@@ -47,22 +55,28 @@ class Player implements GameObject {
         ctx.stroke();
 
 
-        // arms
-        ctx.beginPath();
-        ctx.moveTo(playerScreenPosition - this.x, this.y + 10);
-        ctx.lineTo(playerScreenPosition - this.x + 10 + 5 * Math.sin(this.action / 2) + (Math.ceil(Math.abs(this.x)) % 35) / 10, this.y + 60 + 5 * Math.sin(this.action / 2));
-        ctx.moveTo(playerScreenPosition - this.x, this.y + 10);
-        ctx.lineTo(playerScreenPosition - this.x - 10 - 5 * Math.sin(this.action / 2) - (Math.ceil(Math.abs(this.x)) % 35) / 10, this.y + 60 + 5 * Math.sin(this.action / 2));
-        ctx.stroke();
 
-        //staff
+        //head
+        ctx.fillStyle = "gray"
         ctx.beginPath();
-        ctx.fillStyle = "silver";
-        let rotateAngle = -2
+        ctx.arc(playerScreenPosition - this.x, this.y, 25, 0, Math.PI * 2, true); // draw circle for head
+        ctx.fill()
 
-        ctx.translate(playerScreenPosition - this.x + this.direction * 15, this.y + 60)
+
+        //sword
+        if (this.swordPattern == null) {
+            let image = new Image()
+            image.src = 'images/sword.png'
+            this.swordPattern = ctx.createPattern(image, "no-repeat");
+        }
+        ctx.beginPath();
+        ctx.fillStyle = this.swordPattern
+        let rotateAngle = -1.8
+
+        let swordOffset = this.direction == -1 ? 5 : 0
+        ctx.translate(playerScreenPosition - this.x + this.direction * 15 + swordOffset, this.y + 60)
         ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
-        ctx.fillRect(0, 0, 8, 85)
+        ctx.fillRect(0, 0, 12, 85)
 
         ctx.stroke();
         ctx.restore();
@@ -111,15 +125,24 @@ class Player implements GameObject {
                         this.vx = -5;
                         this.direction = -1;
                         break;
+
                     case 39: // right arrow
                         this.vx = 5;
                         this.direction = 1;
                         break;
+
                     case 38: // up arrow
-                        if (this.vy == 0) this.vy = -20;
+                        if (this.vy == 0) {
+                            this.vy = -20;
+                            this.jumpSound()
+                        }
                         break;
+
                     case 32: //space
-                        this.action += 1;
+                        if (this.action == 0) {
+                            this.action += 1;
+                            this.hitSound()
+                        }
                         break;
                 }
                 break;
@@ -138,6 +161,16 @@ class Player implements GameObject {
                 break;
 
         }
+    }
+
+    public jumpSound = () => {
+        let audio = new Audio('sounds/jump.wav');
+        audio.play();
+    }
+
+    public hitSound = () => {
+        let audio = new Audio('sounds/hit.wav');
+        audio.play();
     }
 
 }
