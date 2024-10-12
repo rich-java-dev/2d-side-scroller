@@ -12,12 +12,12 @@ class Enemy implements GameObject {
     public height: number = 10
     public color: string = "red"
 
-    private vx: number = 2
-    private vy: number = 0
-    private action: number = 0
-    private direction: number = 1
+    public vx: number = 2
+    public vy: number = 0
+    public action: number = 0
+    public direction: number = 1
 
-    private initialX: number = 0;
+    public initialX: number = 0;
 
     public constructor(x: number, y: number, width: number, height: number, color: string, direction: number, vx: number) {
         this.x = x
@@ -25,10 +25,10 @@ class Enemy implements GameObject {
         this.width = width
         this.height = height
         this.color = color
-        this.initialX = x;
-
         this.direction = direction
         this.vx = vx
+
+        this.initialX = x;
 
     }
 
@@ -46,19 +46,11 @@ class Enemy implements GameObject {
     }
 
 
-    public update = (platforms: Platform[]) => {
+    public update = () => {
 
         this.vy += 1;
         if (this.vy > 15)
             this.vy = 15;
-
-        platforms.map(p => {
-            if (detectEnemyPlatformCollision(this, p)) {
-                this.y = p.y - this.height
-                if (this.vy > 0) this.vy = 0
-            }
-        })
-
 
         this.behavior()
 

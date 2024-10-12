@@ -2,6 +2,7 @@ import Level from './Level'
 import Platform from './Platform'
 import Ground from './Ground'
 import Enemy from './Enemy'
+import Zombie from './Zombie'
 import Goal from './Goal'
 
 class Level3 extends Level {
@@ -18,11 +19,11 @@ class Level3 extends Level {
         ]
 
         this.enemies = [
-            new Enemy(900, 600, 50, 50, "red", 1, 1),
-            new Enemy(1200, 600, 50, 50, "red", -1, -2),
-            new Enemy(1500, 600, 50, 50, "red", 1, 2),
-            new Enemy(1600, 600, 50, 50, "red", -1, -1.5),
-            new Enemy(2000, 600, 50, 50, "red", 1, 3),
+            new Zombie(900, 400, 1),
+            new Zombie(1200, 400, -2),
+            new Zombie(1500, 400, 2),
+            new Zombie(1600, 400, 1.5),
+            new Zombie(2000, 400, -1),
         ]
 
 

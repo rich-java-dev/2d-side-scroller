@@ -12,10 +12,13 @@ class Player implements GameObject {
     public height: number = 100
     public color: string = "black"
 
-    private vx: number = 0
-    private vy: number = 0
-    private action: number = 0
-    private direction: number = 1
+    public vx: number = 0
+    public vy: number = 0
+
+    public action: number = 0
+    public invinsibility: number = 0
+
+    public direction: number = 1
 
     public hp: number = 3
 
@@ -30,6 +33,11 @@ class Player implements GameObject {
         ctx.save();
         ctx.translate(this.x, 0)
         ctx.lineWidth = 8;
+
+        if (this.invinsibility > 0 && Math.ceil(this.invinsibility) % 2 == 0) {
+            ctx.restore()
+            return;
+        }
 
         // body
         ctx.fillStyle = "brown"
@@ -65,13 +73,12 @@ class Player implements GameObject {
 
         // sword
         if (this.swordPattern == null) {
-            console.log("Loading Sword")
             let image = new Image(12, 85)
             image.src = 'images/sword.png'
             this.swordPattern = ctx.createPattern(image, "no-repeat");
         }
         ctx.fillStyle = this.swordPattern
-        let rotateAngle = -1.8
+        let rotateAngle = -2
 
         let swordOffset = this.direction == -1 ? 5 : -2
         ctx.translate(playerScreenPosition - this.x + this.direction * 15 + swordOffset, this.y + 60 - swordOffset)
@@ -81,7 +88,6 @@ class Player implements GameObject {
         // display hearts
         ctx.restore()
         if (this.heartPattern == null) {
-            console.log("Loading Heart")
             let image = new Image(50, 50)
             image.src = 'images/heart.png'
             this.heartPattern = ctx.createPattern(image, "repeat");
@@ -90,41 +96,70 @@ class Player implements GameObject {
         for (let i = 0; i < this.hp; i++) {
             ctx.fillStyle = this.heartPattern
             ctx.fillRect((i + 1) * 50, 150, 50, 50)
-            // ctx.stroke()
         }
 
         ctx.restore();
     }
 
 
-    public update = (platforms: Platform[]) => {
+    public update = () => {
 
-        this.vy++
-        if (this.vy > 18)
-            this.vy = 18;
+        this.checkInvinsibility()
+        this.checkAction()
 
+        this.applyGravity()
+        // this.detectPlatformCollision(platforms)
+
+        this.x = this.x + this.vx;
+        this.y = this.y + this.vy;
+
+        this.checkFallDamage()
+    }
+
+    public detectPlatformCollision = (platforms: Platform[]) => {
         platforms.map(p => {
             if (detectPlayerPlatformCollision(this, p)) {
                 this.y = p.y - this.height
                 if (this.vy > 0) this.vy = 0
             }
         })
-
-        if (this.action > 0) {
-            this.action += 0.3;
-        }
-        if (this.action >= 6.28)
-            this.action = 0;
+    }
 
 
-        this.x = this.x + this.vx;
-        this.y = this.y + this.vy;
+    public applyGravity = () => {
+        this.vy++
+        if (this.vy > 18)
+            this.vy = 18;
+    }
 
+    public checkFallDamage = () => {
         if (this.y > 2000) {
             this.y = 100
             this.vy = 0
             this.x = 0
+            this.takeDamage()
+        }
+    }
+
+    public checkInvinsibility = () => {
+        if (this.invinsibility > 0)
+            this.invinsibility += 0.1;
+        if (this.invinsibility > 7)
+            this.invinsibility = 0
+    }
+
+    public checkAction = () => {
+        if (this.action > 0) {
+            this.action += 0.3;
+        }
+        if (this.action >= 6.3)
+            this.action = 0;
+    }
+
+    public takeDamage = () => {
+        if (this.invinsibility == 0) {
             this.hp--;
+            this.invinsibility = 0.1
         }
     }
 

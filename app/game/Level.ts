@@ -4,7 +4,7 @@ import Enemy from './Enemy'
 import GameObject from './GameObject'
 import Platform from './Platform'
 import Player from './Player'
-import { detectGoalCollision } from './CollisionDetection'
+import { detectGoalCollision, detectPlayerPlatformCollision, detectEnemyPlatformCollision, detectEnemyPlayerCollision, detectPlayerHitEnemy } from './CollisionDetection'
 
 
 class Level {
@@ -35,9 +35,48 @@ class Level {
 
 
     public update = () => {
-        this.player.update(this.platforms)
-        this.enemies.map(e => e.update(this.platforms))
+        this.player.update()
+        this.detectPlayerPlatformCollisions()
+
+        this.enemies.map(enemy => {
+            enemy.update()
+            this.detectEnemyPlatformCollisions(enemy)
+
+            if(detectPlayerHitEnemy(this.player, enemy)){
+                console.log("COLLISION DETECTED!")
+                let idx = this.enemies.indexOf(enemy)
+                this.enemies.splice(idx, 1)
+            }
+            if (detectEnemyPlayerCollision(this.player, enemy)) {
+                this.player.takeDamage()
+                this.player.vx = 0
+                this.player.vy = 0
+            }
+
+            detectPlayerHitEnemy(this.player, enemy)
+        })
+
     }
+
+
+    public detectPlayerPlatformCollisions = () => {
+        this.platforms.map(p => {
+            if (detectPlayerPlatformCollision(this.player, p)) {
+                this.player.y = p.y - this.player.height
+                if (this.player.vy > 0) this.player.vy = 0
+            }
+        })
+    }
+
+    public detectEnemyPlatformCollisions = (enemy: Enemy) => {
+        this.platforms.map(p => {
+            if (detectEnemyPlatformCollision(enemy, p)) {
+                enemy.y = p.y - enemy.height
+                if (enemy.vy > 0) enemy.vy = 0
+            }
+        })
+    }
+
 
     public drawToCanvas = () => {
         this.ctx.clearRect(0, 0, this.width, this.height);
