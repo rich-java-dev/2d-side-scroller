@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react'
-import Enemy from '../game/Enemy'
+import Enemy from '../game/enemies/Enemy'
 import Player from '../game/Player';
-import Platform from '../game/Platform'
+import Platform from '../game/platforms/Platform'
 import Goal from '../game/Goal'
-import LevelManager from '../game/LevelManager'
+import LevelManager from '../game/levels/LevelManager'
 
 const Canvas = props => {
 

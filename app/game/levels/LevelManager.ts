@@ -1,9 +1,11 @@
-import { playerScreenPosition } from './Constants';
+import { playerScreenPosition } from '../Constants';
 import Level from './Level'
 import Level1 from './Level1'
 import Level2 from './Level2'
 import Level3 from './Level3'
 import Level4 from './Level4'
+
+import Sounds from '../Sounds'
 
 class LevelManager {
 
@@ -20,9 +22,9 @@ class LevelManager {
     public constructor() {
 
         this.levels = [
-            new Level1(),
-            new Level2(),
-            new Level3(),
+            // new Level1(),
+            // new Level2(),
+            // new Level3(),
             new Level4(),
         ]
     }
@@ -44,7 +46,7 @@ class LevelManager {
         }
 
         if (this.activeLevel.isCleared()) {
-            this.winSound()
+            Sounds.winSound()
             this.levels.shift()
             this.levelIdx++;
             if (this.levels.length > 0)
@@ -70,11 +72,6 @@ class LevelManager {
 
     public controller = (evt: any) => {
         this.activeLevel.player.controller(evt);
-    }
-
-    public winSound = () => {
-        let audio = new Audio('sounds/win.wav');
-        audio.play();
     }
 
 }

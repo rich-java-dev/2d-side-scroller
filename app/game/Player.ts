@@ -1,12 +1,14 @@
-import Platform from './Platform'
+import Platform from './platforms/Platform'
 import GameObject from './GameObject'
 import { detectPlayerPlatformCollision } from './CollisionDetection'
 import { playerScreenPosition } from './Constants'
+import Sounds from './Sounds'
+import Patterns from './Patterns'
 
 class Player implements GameObject {
 
 
-    public x: number = 0;
+    public x: number = 0
     public y: number = 0
     public width: number = 10
     public height: number = 100
@@ -18,12 +20,13 @@ class Player implements GameObject {
     public action: number = 0
     public invinsibility: number = 0
 
+    public sword: boolean = true
+
     public direction: number = 1
 
     public hp: number = 3
 
-    private swordPattern: any = null;
-    private heartPattern: any = null;
+
 
     public constructor() {
     }
@@ -72,29 +75,22 @@ class Player implements GameObject {
 
 
         // sword
-        if (this.swordPattern == null) {
-            let image = new Image(12, 85)
-            image.src = 'images/sword.png'
-            this.swordPattern = ctx.createPattern(image, "no-repeat");
+
+        if (this.sword) {
+            ctx.fillStyle = Patterns.getSwordPattern(ctx)
+            let rotateAngle = -2
+
+            let swordOffset = this.direction == -1 ? 5 : -2
+            ctx.translate(playerScreenPosition - this.x + this.direction * 15 + swordOffset, this.y + 60 - swordOffset)
+            ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
+            ctx.fillRect(0, 0, 12, 85)
         }
-        ctx.fillStyle = this.swordPattern
-        let rotateAngle = -2
-
-        let swordOffset = this.direction == -1 ? 5 : -2
-        ctx.translate(playerScreenPosition - this.x + this.direction * 15 + swordOffset, this.y + 60 - swordOffset)
-        ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
-        ctx.fillRect(0, 0, 12, 85)
-
         // display hearts
         ctx.restore()
-        if (this.heartPattern == null) {
-            let image = new Image(50, 50)
-            image.src = 'images/heart.png'
-            this.heartPattern = ctx.createPattern(image, "repeat");
-        }
+
 
         for (let i = 0; i < this.hp; i++) {
-            ctx.fillStyle = this.heartPattern
+            ctx.fillStyle = Patterns.getHeartPattern(ctx)
             ctx.fillRect((i + 1) * 50, 150, 50, 50)
         }
 
@@ -114,14 +110,7 @@ class Player implements GameObject {
         this.y = this.y + this.vy;
     }
 
-    public detectPlatformCollision = (platforms: Platform[]) => {
-        platforms.map(p => {
-            if (detectPlayerPlatformCollision(this, p)) {
-                this.y = p.y - this.height
-                if (this.vy > 0) this.vy = 0
-            }
-        })
-    }
+
 
 
     public applyGravity = () => {
@@ -147,7 +136,7 @@ class Player implements GameObject {
 
     public takeDamage = () => {
         if (this.invinsibility == 0) {
-            this.hitSound()
+            Sounds.hitSound()
             this.hp--
             this.invinsibility = 0.1
         }
@@ -174,14 +163,14 @@ class Player implements GameObject {
                     case 38: // up arrow
                         if (this.vy == 0) {
                             this.vy = -20;
-                            this.jumpSound()
+                            Sounds.jumpSound()
                         }
                         break;
 
                     case 32: //space
-                        if (this.action == 0) {
+                        if (this.sword && this.action == 0) {
                             this.action++
-                            this.swingSound()
+                            Sounds.swingSound()
                         }
                         break;
                 }
@@ -201,21 +190,6 @@ class Player implements GameObject {
                 break;
 
         }
-    }
-
-    public jumpSound = () => {
-        let audio = new Audio('sounds/jump.wav');
-        audio.play();
-    }
-
-    public swingSound = () => {
-        let audio = new Audio('sounds/swing.wav');
-        audio.play();
-    }
-
-    public hitSound = () => {
-        let audio = new Audio('sounds/hit.wav');
-        audio.play();
     }
 
 }

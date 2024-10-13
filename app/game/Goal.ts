@@ -1,4 +1,4 @@
-import Platform from '../game/Platform'
+import Platform from './platforms/Platform'
 import GameObject from './GameObject'
 import { playerScreenPosition } from './Constants';
 

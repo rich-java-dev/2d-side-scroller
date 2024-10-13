@@ -1,9 +1,9 @@
 import Level from './Level'
-import Platform from './Platform'
-import Ground from './Ground'
-import Enemy from './Enemy'
-import Zombie from './Zombie'
-import Goal from './Goal'
+import Platform from '../platforms/Platform'
+import Ground from '../platforms/Ground'
+import Enemy from '../enemies/Enemy'
+import Zombie from '../enemies/Zombie'
+import Goal from '../Goal'
 
 class Level3 extends Level {
 
@@ -24,9 +24,6 @@ class Level3 extends Level {
             new Zombie(1500, 400, 2),
             new Zombie(1600, 400, 1.5),
             new Zombie(2000, 400, -2),
-
-            new Zombie(1250, 400, 3),
-            new Zombie(1200, 400, -3),
             new Zombie(1300, 400, 4),
             new Zombie(2500, 400, -3),
             new Zombie(2200, 400, -1),

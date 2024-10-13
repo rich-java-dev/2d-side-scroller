@@ -1,11 +1,11 @@
 
-import Goal from './Goal'
-import Enemy from './Enemy'
-import GameObject from './GameObject'
-import Platform from './Platform'
-import Ground from './Ground'
-import Player from './Player'
-import { detectGoalCollision, detectPlayerPlatformCollision, detectEnemyPlatformCollision, detectEnemyPlayerCollision, detectPlayerHitEnemy, detectPlayerWallCollision } from './CollisionDetection'
+import Goal from '../Goal'
+import Enemy from '../enemies/Enemy'
+import GameObject from '../GameObject'
+import Platform from '../platforms/Platform'
+import Ground from '../platforms/Ground'
+import Player from '../Player'
+import { detectGoalCollision, detectPlayerPlatformCollision, detectEnemyPlatformCollision, detectEnemyPlayerCollision, detectPlayerHitEnemy, detectPlayerWallCollision } from '../CollisionDetection'
 
 
 class Level {

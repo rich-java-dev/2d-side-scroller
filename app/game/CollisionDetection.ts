@@ -1,6 +1,6 @@
 import GameObject from './GameObject'
 import Player from './Player'
-import Enemy from './Enemy'
+import Enemy from './enemies/Enemy'
 import { playerScreenPosition } from './Constants'
 
 

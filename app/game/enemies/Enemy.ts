@@ -1,7 +1,8 @@
-import Platform from './Platform'
-import GameObject from './GameObject'
-import { detectEnemyPlatformCollision } from './CollisionDetection'
-import { playerScreenPosition } from './Constants'
+import Platform from '../platforms/Platform'
+import GameObject from '../GameObject'
+import { detectEnemyPlatformCollision } from '../CollisionDetection'
+import { playerScreenPosition } from '../Constants'
+import Sounds from '../Sounds'
 
 class Enemy implements GameObject {
 
@@ -72,18 +73,13 @@ class Enemy implements GameObject {
 
     public takeDamage = () => {
         if (this.hp > 0) {
-            this.hitSound()
+            Sounds.hitSound()
             this.hp--
         }
         if (this.hp <= 0)
             this.vx = 0
     }
 
-
-    public hitSound = () => {
-        let audio = new Audio('sounds/hit.wav');
-        audio.play();
-    }
 
 }
 

@@ -1,5 +1,5 @@
 import Platform from './Platform'
-
+import Patterns from '../Patterns'
 
 
 class Ground extends Platform {
@@ -15,13 +15,7 @@ class Ground extends Platform {
         ctx.save()
         ctx.translate(-offset, 0)
 
-        if (Ground.pattern == null) {
-            let image = new Image(80, 80)
-            image.src = 'images/grass.png'
-            Ground.pattern = ctx.createPattern(image, "repeat");
-        }
-
-        ctx.fillStyle = Ground.pattern
+        ctx.fillStyle = Patterns.getGroundPattern(ctx)
 
         ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.restore()
