@@ -22,9 +22,9 @@ class LevelManager {
     public constructor() {
 
         this.levels = [
-            // new Level1(),
-            // new Level2(),
-            // new Level3(),
+            new Level1(),
+            new Level2(),
+            new Level3(),
             new Level4(),
         ]
     }
