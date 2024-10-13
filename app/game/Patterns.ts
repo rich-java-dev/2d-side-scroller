@@ -5,6 +5,12 @@ class Patterns {
     private static swordPattern: any = null;
     private static heartPattern: any = null;
 
+    private static keyPattern: any = null;
+
+    private static groundPattern: any = null;
+    private static brickPattern: any = null;
+
+
     private static zombiePattern: any = null;
     private static deadZombiePattern: any = null;
 
@@ -12,12 +18,14 @@ class Patterns {
     private static deadSkeletonPattern: any = null;
 
 
-    private static groundPattern: any = null;
+    //
+    // PLAYER
+    //
 
     public static getSwordPattern = (ctx: any) => {
         if (Patterns.swordPattern == null) {
             let image = new Image()
-            image.src = 'images/sword.png'
+            image.src = 'images/sword1.png'
             Patterns.swordPattern = ctx.createPattern(image, "no-repeat");
         }
         return Patterns.swordPattern
@@ -34,6 +42,23 @@ class Patterns {
     }
 
 
+    //
+    // ITEMS
+    //
+
+    public static getKeyPattern = (ctx: any) => {
+        if(Patterns.keyPattern == null) {
+            let image = new Image()
+            image.src = 'images/key.png'
+            Patterns.keyPattern = ctx.createPattern(image, "repeat");
+        }
+        return Patterns.keyPattern
+    }
+
+    //
+    // FLOORS/WALLS/LEVEL
+    //
+
     public static getGroundPattern = (ctx: any) => {
         if (Patterns.groundPattern == null) {
             let image = new Image()
@@ -42,6 +67,20 @@ class Patterns {
         }
         return Patterns.groundPattern
     }
+
+    public static getBrickPattern = (ctx: any) => {
+        if (Patterns.brickPattern == null) {
+            let image = new Image(80, 80)
+            image.src = 'images/brick.png'
+            Patterns.brickPattern = ctx.createPattern(image, "repeat");
+        }
+        return Patterns.brickPattern
+    }
+
+
+    //
+    // ENEMIES
+    //
 
     public static getZombiePattern = (ctx: any) => {
         if (Patterns.zombiePattern == null) {

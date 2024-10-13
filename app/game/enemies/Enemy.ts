@@ -1,5 +1,6 @@
 import Platform from '../platforms/Platform'
 import GameObject from '../GameObject'
+import Item from '../items/Item'
 import { detectEnemyPlatformCollision } from '../CollisionDetection'
 import { playerScreenPosition } from '../Constants'
 import Sounds from '../Sounds'
@@ -21,7 +22,9 @@ class Enemy implements GameObject {
 
     public initialX: number = 0;
 
-    public constructor(hp: number, x: number, y: number, width: number, height: number, color: string, direction: number, vx: number) {
+    public drops: Item[] = [];
+
+    public constructor(hp: number, x: number, y: number, width: number, height: number, color: string, direction: number, vx: number, item: Item | null) {
         this.hp = hp
         this.x = x
         this.y = y
@@ -30,6 +33,9 @@ class Enemy implements GameObject {
         this.color = color
         this.direction = direction
         this.vx = vx
+
+        if (item != null)
+            this.drops.push(item)
 
         this.initialX = x;
 
@@ -71,13 +77,27 @@ class Enemy implements GameObject {
         }
     }
 
+    public dropItems(): Item[] {
+        let drops =this.drops.map(drop =>{
+            drop.x = this.x + this.width / 2
+            drop.y = this.y
+            return drop
+        })
+
+        this.drops = []
+
+        return drops
+
+    }
+
     public takeDamage = () => {
         if (this.hp > 0) {
             Sounds.hitSound()
             this.hp--
         }
-        if (this.hp <= 0)
+        if (this.hp <= 0) {
             this.vx = 0
+        }
     }
 
 

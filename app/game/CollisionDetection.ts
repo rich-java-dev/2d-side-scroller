@@ -1,6 +1,9 @@
 import GameObject from './GameObject'
 import Player from './Player'
 import Enemy from './enemies/Enemy'
+import Door from './platforms/Door'
+import Item from './items/Item'
+import Key from './items/Key'
 import { playerScreenPosition } from './Constants'
 
 
@@ -27,14 +30,29 @@ const detectPlayerHitEnemy = (o1: Player, o2: Enemy): boolean => {
 
 const detectPlayerPlatformCollision = (o1: Player, o2: GameObject): boolean => {
     return (o2.x < o1.x + o1.width + playerScreenPosition
-        && o2.x + o2.width > o1.x + o1.width + playerScreenPosition
+        && (o2.x + o2.width > o1.x + o1.width + playerScreenPosition || o2.x + o2.width > o1.x + playerScreenPosition)
         && Math.abs(o2.y - o1.y - o1.height) < 10)
 
 }
 
 const detectPlayerWallCollision = (o1: Player, o2: GameObject): boolean => {
     return (o2.x < o1.x + o1.width + playerScreenPosition
-        && o2.x + o2.width > o1.x + o1.width + playerScreenPosition
+        && (o2.x + o2.width > o1.x + o1.width + playerScreenPosition || o2.x + o2.width > o1.x + playerScreenPosition)
+        && o1.y + o1.height > o2.y
+        && o1.y < o2.y + o2.height)
+}
+
+const detectPlayerItemCollision = (o1: Player, o2: Item): boolean => {
+    return detectPlayerWallCollision(o1, o2)
+}
+
+const detectPlayerDoorCollision = (o1: Player, o2: Door): boolean => {
+    return (o2.locked && detectPlayerWallCollision(o1, o2))
+}
+
+const detectEnemyWallCollision = (o1: Enemy, o2: GameObject): boolean => {
+    return (o2.x < o1.x + o1.width
+        && (o2.x + o2.width > o1.x + o1.width || o2.x + o2.width > o1.x)
         && o1.y + o1.height > o2.y
         && o1.y < o2.y + o2.height)
 
@@ -62,8 +80,13 @@ const detectGoalCollision = (o1: Player, o2: GameObject): boolean => {
 export {
     detectPlayerPlatformCollision,
     detectPlayerWallCollision,
-    detectEnemyPlatformCollision,
-    detectGoalCollision,
-    detectEnemyPlayerCollision,
+    detectPlayerItemCollision,
+    detectPlayerDoorCollision,
     detectPlayerHitEnemy,
+
+    detectEnemyPlatformCollision,
+    detectEnemyWallCollision,
+    detectEnemyPlayerCollision,
+
+    detectGoalCollision,
 }

@@ -1,6 +1,7 @@
 import Enemy from './Enemy'
 import Platform from '../platforms/Platform'
 import GameObject from '../GameObject'
+import Key from '../items/Key'
 import { detectEnemyPlatformCollision } from '../CollisionDetection'
 import { playerScreenPosition } from '../Constants'
 import Patterns from '../Patterns'
@@ -9,9 +10,9 @@ class Skeleton extends Enemy {
 
     public resurrection = 0
 
-    public constructor(x: number, y: number, vx: number) {
+    public constructor(x: number, y: number, vx: number, drop: Key | null) {
         let direction = vx > 0 ? 1 : -1
-        super(1, x, y, 60, 100, "", direction, vx)
+        super(1, x, y, 60, 100, "", direction, vx, drop)
 
         this.initialX = x;
         this.direction = direction

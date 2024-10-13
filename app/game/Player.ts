@@ -1,5 +1,6 @@
 import Platform from './platforms/Platform'
 import GameObject from './GameObject'
+import Item from './items/Item'
 import { detectPlayerPlatformCollision } from './CollisionDetection'
 import { playerScreenPosition } from './Constants'
 import Sounds from './Sounds'
@@ -10,7 +11,7 @@ class Player implements GameObject {
 
     public x: number = 0
     public y: number = 0
-    public width: number = 10
+    public width: number = 20
     public height: number = 100
     public color: string = "black"
 
@@ -25,7 +26,7 @@ class Player implements GameObject {
     public direction: number = 1
 
     public hp: number = 3
-
+    public items: Item[] = []
 
 
     public constructor() {
@@ -85,14 +86,20 @@ class Player implements GameObject {
             ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
             ctx.fillRect(0, 0, 12, 85)
         }
-        // display hearts
+
+
+        // hearts
         ctx.restore()
-
-
         for (let i = 0; i < this.hp; i++) {
             ctx.fillStyle = Patterns.getHeartPattern(ctx)
             ctx.fillRect((i + 1) * 50, 150, 50, 50)
         }
+
+        // items
+        this.items.map((item, idx) => {
+            ctx.fillStyle = Patterns.getKeyPattern(ctx)
+            ctx.fillRect((idx + 1) * item.width, 200, item.width, 50)
+        })
 
         ctx.restore();
     }
@@ -140,6 +147,10 @@ class Player implements GameObject {
             this.hp--
             this.invinsibility = 0.1
         }
+    }
+
+    public collectItem = (item: Item) => {
+        this.items.push(item)
     }
 
 

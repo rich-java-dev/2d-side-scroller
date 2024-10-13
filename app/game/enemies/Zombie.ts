@@ -11,7 +11,7 @@ class Zombie extends Enemy {
 
     public constructor(x: number, y: number, vx: number) {
         let direction = vx > 0 ? 1 : -1
-        super(1, x, y, 60, 100, "", direction, vx)
+        super(1, x, y, 60, 100, "", direction, vx, null)
 
         this.initialX = x;
         this.direction = direction

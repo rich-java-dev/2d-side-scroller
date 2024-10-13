@@ -4,8 +4,26 @@ import Enemy from '../enemies/Enemy'
 import GameObject from '../GameObject'
 import Platform from '../platforms/Platform'
 import Ground from '../platforms/Ground'
+import Wall from '../platforms/Wall'
+import Door from '../platforms/Door'
+import Item from '../items/Item'
+import Key from '../items/Key'
 import Player from '../Player'
-import { detectGoalCollision, detectPlayerPlatformCollision, detectEnemyPlatformCollision, detectEnemyPlayerCollision, detectPlayerHitEnemy, detectPlayerWallCollision } from '../CollisionDetection'
+import {
+    detectPlayerPlatformCollision,
+    detectPlayerWallCollision,
+    detectPlayerHitEnemy,
+    detectPlayerDoorCollision,
+    detectPlayerItemCollision,
+
+    detectEnemyPlatformCollision,
+    detectEnemyWallCollision,
+    detectEnemyPlayerCollision,
+
+    detectGoalCollision,
+
+
+} from '../CollisionDetection'
 
 
 class Level {
@@ -20,6 +38,9 @@ class Level {
     public goal: Goal = new Goal(5000, 0)
     public enemies: Enemy[] = []
     public platforms: Platform[] = []
+    public items: Item[] = []
+
+
     public deathPlane: number = 2000
 
     public sky: any = null;
@@ -41,6 +62,7 @@ class Level {
         this.player.update()
         this.detectPlayerFallDamage()
         this.detectPlayerPlatformCollisions()
+        this.detectPlayerItemCollisions()
 
 
         this.enemies.map(enemy => {
@@ -49,6 +71,10 @@ class Level {
 
             if (detectPlayerHitEnemy(this.player, enemy)) {
                 enemy.takeDamage()
+                if (enemy.hp <= 0) {
+                    let drops = enemy.dropItems()
+                    this.items = [...this.items, ...drops]
+                }
                 // let idx = this.enemies.indexOf(enemy)
                 // this.enemies.splice(idx, 1)
             }
@@ -70,11 +96,40 @@ class Level {
                 this.player.y = p.y - this.player.height
                 if (this.player.vy > 0) this.player.vy = 0
             }
-            if (p instanceof Ground)
+            if (p instanceof Ground || p instanceof Wall)
                 if (detectPlayerWallCollision(this.player, p)) {
                     this.player.vx = 0
                     this.player.x -= this.player.direction * 5
                 }
+            if (p instanceof Door) {
+
+                if (detectPlayerDoorCollision(this.player, p)) {
+                    this.player.items.map((item, idx) => {
+                        if (item instanceof Key) {
+                            if (p.locked) {
+                                p.locked = false
+                                this.player.items.splice(idx, 1)
+                            }
+                        }
+                    })
+                    if (p.locked) {
+                        this.player.vx = 0
+                        this.player.x -= this.player.direction * 5
+                    }
+                }
+
+
+
+            }
+        })
+    }
+
+    public detectPlayerItemCollisions = () => {
+        this.items.map((item, idx) => {
+            if (detectPlayerItemCollision(this.player, item)) {
+                this.player.collectItem(item)
+                this.items.splice(idx, 1)
+            }
         })
     }
 
@@ -84,6 +139,12 @@ class Level {
                 enemy.y = p.y - enemy.height
                 if (enemy.vy > 0) enemy.vy = 0
             }
+            if (p instanceof Ground || p instanceof Wall || p instanceof Door)
+                if (detectEnemyWallCollision(enemy, p)) {
+                    enemy.direction *= -1
+                    enemy.vx *= enemy.direction
+                    enemy.x += enemy.direction * 5
+                }
         })
     }
 
@@ -105,6 +166,7 @@ class Level {
         this.platforms.map(o => o.draw(this.ctx, this.player.x))
         this.goal.draw(this.ctx, this.player.x)
         this.enemies.map(e => e.draw(this.ctx, this.player.x))
+        this.items.map(i => i.draw(this.ctx, this.player.x))
         this.player.draw(this.ctx)
     }
 

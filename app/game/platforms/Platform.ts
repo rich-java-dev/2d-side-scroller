@@ -1,4 +1,5 @@
 import GameObject from '../GameObject'
+import Patterns from '../Patterns'
 
 class Platform implements GameObject {
 
@@ -8,8 +9,6 @@ class Platform implements GameObject {
     public width: number = 10;
     public height: number = 10;
     public color: string = "green";
-
-    public static pattern: any = null;
 
     public constructor(x: number, y: number, width: number, height: number, color: string) {
         this.x = x
@@ -25,13 +24,7 @@ class Platform implements GameObject {
         ctx.save()
         ctx.translate(-offset, 0)
 
-        if (Platform.pattern == null) {
-            let image = new Image(80, 80)
-            image.src = 'images/brick.png'
-            Platform.pattern = ctx.createPattern(image, "repeat");
-        }
-    
-        ctx.fillStyle = Platform.pattern
+        ctx.fillStyle = Patterns.getBrickPattern(ctx)
 
         ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.restore()
