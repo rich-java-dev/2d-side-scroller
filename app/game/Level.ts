@@ -43,9 +43,9 @@ class Level {
             this.detectEnemyPlatformCollisions(enemy)
 
             if(detectPlayerHitEnemy(this.player, enemy)){
-                console.log("COLLISION DETECTED!")
-                let idx = this.enemies.indexOf(enemy)
-                this.enemies.splice(idx, 1)
+                enemy.takeDamage()
+                // let idx = this.enemies.indexOf(enemy)
+                // this.enemies.splice(idx, 1)
             }
             if (detectEnemyPlayerCollision(this.player, enemy)) {
                 this.player.takeDamage()

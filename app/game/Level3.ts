@@ -23,7 +23,13 @@ class Level3 extends Level {
             new Zombie(1200, 400, -2),
             new Zombie(1500, 400, 2),
             new Zombie(1600, 400, 1.5),
-            new Zombie(2000, 400, -1),
+            new Zombie(2000, 400, -2),
+
+            new Zombie(1250, 400, 3),
+            new Zombie(1200, 400, -3),
+            new Zombie(1300, 400, 4),
+            new Zombie(2500, 400, -3),
+            new Zombie(2200, 400, -1),
         ]
 
 

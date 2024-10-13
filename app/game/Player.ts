@@ -40,11 +40,11 @@ class Player implements GameObject {
         }
 
         // body
-        ctx.fillStyle = "brown"
+        ctx.fillStyle = "black"
         ctx.fillRect(playerScreenPosition - this.x - 5, this.y, 10, 50)
 
         // arms
-        ctx.strokeStyle = "brown"
+        ctx.strokeStyle = "black"
         ctx.beginPath();
         ctx.moveTo(playerScreenPosition - this.x, this.y + 10);
         ctx.lineTo(playerScreenPosition - this.x + 10 + 5 * Math.sin(this.action / 2) + (Math.ceil(Math.abs(this.x)) % 35) / 10, this.y + 60 + 5 * Math.sin(this.action / 2));
@@ -54,7 +54,7 @@ class Player implements GameObject {
 
 
         // legs
-        ctx.strokeStyle = "blue"
+        ctx.strokeStyle = "black"
         ctx.beginPath();
         ctx.moveTo(playerScreenPosition - this.x, this.y + 50);
         ctx.lineTo(playerScreenPosition - this.x + 5 + (Math.ceil(Math.abs(this.x)) % 40) / 4, this.y + 100);
@@ -158,7 +158,8 @@ class Player implements GameObject {
 
     public takeDamage = () => {
         if (this.invinsibility == 0) {
-            this.hp--;
+            this.hitSound()
+            this.hp--
             this.invinsibility = 0.1
         }
     }
@@ -191,7 +192,7 @@ class Player implements GameObject {
                     case 32: //space
                         if (this.action == 0) {
                             this.action++
-                            this.hitSound()
+                            this.swingSound()
                         }
                         break;
                 }
@@ -215,6 +216,11 @@ class Player implements GameObject {
 
     public jumpSound = () => {
         let audio = new Audio('sounds/jump.wav');
+        audio.play();
+    }
+
+    public swingSound = () => {
+        let audio = new Audio('sounds/swing.wav');
         audio.play();
     }
 

@@ -11,6 +11,7 @@ class Enemy implements GameObject {
     public width: number = 10
     public height: number = 10
     public color: string = "red"
+    public hp: number = 1
 
     public vx: number = 2
     public vy: number = 0
@@ -19,7 +20,8 @@ class Enemy implements GameObject {
 
     public initialX: number = 0;
 
-    public constructor(x: number, y: number, width: number, height: number, color: string, direction: number, vx: number) {
+    public constructor(hp: number, x: number, y: number, width: number, height: number, color: string, direction: number, vx: number) {
+        this.hp = hp
         this.x = x
         this.y = y
         this.width = width
@@ -59,15 +61,28 @@ class Enemy implements GameObject {
 
     }
 
-    public behavior = () => {
-
-        if (Math.abs(this.initialX - this.x) > 200) {
-            this.vx = -this.vx
-            this.direction = this.vx > 0 ? 1 : -1;
+    public behavior() {
+        if (this.hp > 0) {
+            if (Math.abs(this.initialX - this.x) > 200) {
+                this.vx = -this.vx
+                this.direction = this.vx > 0 ? 1 : -1;
+            }
         }
+    }
+
+    public takeDamage = () => {
+        if (this.hp > 0) {
+            this.hitSound()
+            this.hp--
+        }
+        if (this.hp <= 0)
+            this.vx = 0
+    }
 
 
-
+    public hitSound = () => {
+        let audio = new Audio('sounds/hit.wav');
+        audio.play();
     }
 
 }

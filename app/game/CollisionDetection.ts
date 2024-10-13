@@ -6,6 +6,7 @@ import { playerScreenPosition } from './Constants'
 
 const detectEnemyPlayerCollision = (o1: Player, o2: Enemy): boolean => {
     return (o1.invinsibility == 0
+        && o2.hp > 0
         && o2.x < o1.x + o1.width + playerScreenPosition
         && o2.x + o2.width > o1.x + o1.width + playerScreenPosition
         && o1.y + o1.height > o2.y
