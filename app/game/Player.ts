@@ -112,8 +112,6 @@ class Player implements GameObject {
 
         this.x = this.x + this.vx;
         this.y = this.y + this.vy;
-
-        this.checkFallDamage()
     }
 
     public detectPlatformCollision = (platforms: Platform[]) => {
@@ -130,15 +128,6 @@ class Player implements GameObject {
         this.vy++
         if (this.vy > 18)
             this.vy = 18;
-    }
-
-    public checkFallDamage = () => {
-        if (this.y > 2000) {
-            this.y = 100
-            this.vy = 0
-            this.x = 0
-            this.takeDamage()
-        }
     }
 
     public checkInvinsibility = () => {

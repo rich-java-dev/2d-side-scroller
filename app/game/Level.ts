@@ -3,8 +3,9 @@ import Goal from './Goal'
 import Enemy from './Enemy'
 import GameObject from './GameObject'
 import Platform from './Platform'
+import Ground from './Ground'
 import Player from './Player'
-import { detectGoalCollision, detectPlayerPlatformCollision, detectEnemyPlatformCollision, detectEnemyPlayerCollision, detectPlayerHitEnemy } from './CollisionDetection'
+import { detectGoalCollision, detectPlayerPlatformCollision, detectEnemyPlatformCollision, detectEnemyPlayerCollision, detectPlayerHitEnemy, detectPlayerWallCollision } from './CollisionDetection'
 
 
 class Level {
@@ -19,6 +20,7 @@ class Level {
     public goal: Goal = new Goal(5000, 0)
     public enemies: Enemy[] = []
     public platforms: Platform[] = []
+    public deathPlane: number = 2000
 
     public sky: any = null;
 
@@ -35,14 +37,17 @@ class Level {
 
 
     public update = () => {
+
         this.player.update()
+        this.detectPlayerFallDamage()
         this.detectPlayerPlatformCollisions()
+
 
         this.enemies.map(enemy => {
             enemy.update()
             this.detectEnemyPlatformCollisions(enemy)
 
-            if(detectPlayerHitEnemy(this.player, enemy)){
+            if (detectPlayerHitEnemy(this.player, enemy)) {
                 enemy.takeDamage()
                 // let idx = this.enemies.indexOf(enemy)
                 // this.enemies.splice(idx, 1)
@@ -65,6 +70,11 @@ class Level {
                 this.player.y = p.y - this.player.height
                 if (this.player.vy > 0) this.player.vy = 0
             }
+            if (p instanceof Ground)
+                if (detectPlayerWallCollision(this.player, p)) {
+                    this.player.vx = 0
+                    this.player.x -= this.player.direction * 5
+                }
         })
     }
 
@@ -75,6 +85,15 @@ class Level {
                 if (enemy.vy > 0) enemy.vy = 0
             }
         })
+    }
+
+    public detectPlayerFallDamage = () => {
+        if (this.player.y > this.deathPlane) {
+            this.player.y = 100
+            this.player.vy = 0
+            this.player.x = 0
+            this.player.takeDamage()
+        }
     }
 
 
@@ -106,7 +125,7 @@ class Level {
         this.ctx.restore()
     }
 
-    public skyBackground = (ctx: any) => {
+    public skyBackground(ctx: any) {
         if (this.sky == null) {
             let image = new Image(80, 80)
             image.src = 'images/clouds.png'

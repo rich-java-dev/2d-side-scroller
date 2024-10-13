@@ -22,16 +22,22 @@ class Level2 extends Level {
             new Platform(3200, 700 - 40, 200, 50, "gray"),
             new Platform(3500, 700 - 40, 200, 50, "gray"),
             new Platform(3820, 700 - 40, 300, 50, "gray"),
-            new Ground(4300, 700, 2000, 900),
+            new Ground(4290, 700, 2000, 900),
         ]
-
-
-
 
         this.goal = new Goal(5000, 500)
 
         this.hint = "jump with up arrow key"
 
+    }
+
+    public skyBackground(ctx: any) {
+        if (this.sky == null) {
+            let image = new Image(80, 80)
+            image.src = 'images/clouds2.png'
+            this.sky = ctx.createPattern(image, "repeat");
+        }
+        return this.sky
     }
 
 

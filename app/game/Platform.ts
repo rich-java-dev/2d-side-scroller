@@ -9,6 +9,8 @@ class Platform implements GameObject {
     public height: number = 10;
     public color: string = "green";
 
+    public static pattern: any = null;
+
     public constructor(x: number, y: number, width: number, height: number, color: string) {
         this.x = x
         this.y = y
@@ -18,11 +20,18 @@ class Platform implements GameObject {
     }
 
 
+
     public draw = (ctx: any, offset: number) => {
         ctx.save()
         ctx.translate(-offset, 0)
 
-        ctx.fillStyle = this.color
+        if (Platform.pattern == null) {
+            let image = new Image(80, 80)
+            image.src = 'images/brick.png'
+            Platform.pattern = ctx.createPattern(image, "repeat");
+        }
+    
+        ctx.fillStyle = Platform.pattern
 
         ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.restore()

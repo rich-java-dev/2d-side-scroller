@@ -6,8 +6,8 @@ import { playerScreenPosition } from './Constants'
 
 class Zombie extends Enemy {
 
-    public zombiePattern: any = null
-    public deadZombiePattern: any = null
+    public static zombiePattern: any = null
+    public static deadZombiePattern: any = null
     public resurrection = 0
 
     public constructor(x: number, y: number, vx: number) {
@@ -35,23 +35,27 @@ class Zombie extends Enemy {
     public draw = (ctx: any, offset: number) => {
         ctx.save()
         ctx.translate(-offset + this.x, this.y)
-        if (this.zombiePattern == null) {
+        
+        if (Zombie.zombiePattern == null) {
             let image = new Image()
             image.src = 'images/zombie.png'
-            this.zombiePattern = ctx.createPattern(image, "no-repeat");
-            image = new Image()
+            Zombie.zombiePattern = ctx.createPattern(image, "no-repeat");
+        }
+        if (Zombie.deadZombiePattern == null) {
+            let image = new Image()
             image.src = 'images/zombie-dead.png'
-            this.deadZombiePattern = ctx.createPattern(image, "no-repeat")
+            Zombie.deadZombiePattern = ctx.createPattern(image, "no-repeat")
         }
 
+
         if (this.hp <= 0) {
-            ctx.fillStyle = this.deadZombiePattern
+            ctx.fillStyle = Zombie.deadZombiePattern
             ctx.translate(0, 70)
             ctx.fillRect(0, 0, this.height, this.width)
             ctx.restore()
         }
         else {
-            ctx.fillStyle = this.zombiePattern
+            ctx.fillStyle = Zombie.zombiePattern
 
             ctx.scale(-this.direction, 1)
             if (this.direction > 0)

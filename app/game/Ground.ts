@@ -4,7 +4,7 @@ import Platform from './Platform'
 
 class Ground extends Platform {
 
-    public pattern: any = null;
+    public static pattern: any = null;
 
 
     public constructor(x: number, y: number, width: number, height: number) {
@@ -15,13 +15,13 @@ class Ground extends Platform {
         ctx.save()
         ctx.translate(-offset, 0)
 
-        if (this.pattern == null) {
+        if (Ground.pattern == null) {
             let image = new Image(80, 80)
             image.src = 'images/grass.png'
-            this.pattern = ctx.createPattern(image, "repeat");
+            Ground.pattern = ctx.createPattern(image, "repeat");
         }
 
-        ctx.fillStyle = this.pattern
+        ctx.fillStyle = Ground.pattern
 
         ctx.fillRect(this.x, this.y, this.width, this.height)
         ctx.restore()

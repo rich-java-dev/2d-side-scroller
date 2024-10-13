@@ -32,6 +32,14 @@ const detectPlayerPlatformCollision = (o1: Player, o2: GameObject): boolean => {
 
 }
 
+const detectPlayerWallCollision = (o1: Player, o2: GameObject): boolean => {
+    return (o2.x < o1.x + o1.width + playerScreenPosition
+        && o2.x + o2.width > o1.x + o1.width + playerScreenPosition
+        && o1.y + o1.height > o2.y
+        && o1.y < o2.y + o2.height)
+
+}
+
 
 const detectEnemyPlatformCollision = (o1: Enemy, o2: GameObject): boolean => {
     return (o2.x < o1.x + o1.width
@@ -53,6 +61,7 @@ const detectGoalCollision = (o1: Player, o2: GameObject): boolean => {
 
 export {
     detectPlayerPlatformCollision,
+    detectPlayerWallCollision,
     detectEnemyPlatformCollision,
     detectGoalCollision,
     detectEnemyPlayerCollision,
