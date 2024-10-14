@@ -25,12 +25,12 @@ class LevelManager {
     public constructor() {
         // Sounds.song1()
         this.levels = [
-            // new Level1(),
-            // new Level2(),
-            // new Level3(),
-            // new Level4(),
-            // new Level5(),
-            // new Level6(),
+            new Level1(),
+            new Level2(),
+            new Level3(),
+            new Level4(),
+            new Level5(),
+            new Level6(),
             new Level7(),
         ]
     }
