@@ -2,7 +2,7 @@ import Platform from '../platforms/Platform'
 import GameObject from '../GameObject'
 import Item from '../items/Item'
 import { detectEnemyPlatformCollision } from '../CollisionDetection'
-import { playerScreenPosition } from '../Constants'
+import Translate from '../Translation'
 import Sounds from '../Sounds'
 
 class Enemy implements GameObject {
@@ -42,9 +42,9 @@ class Enemy implements GameObject {
     }
 
 
-    public draw = (ctx: any, offset: number) => {
+    public draw = (ctx: any, offsetX: number, offsetY: number) => {
         ctx.save()
-        ctx.translate(-offset, 0)
+        ctx.translate(Translate.x - offsetX + this.x, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
 
         // ctx.rotate(this.direction*Math.PI/2);
         ctx.font = "30px Arial";
@@ -78,7 +78,7 @@ class Enemy implements GameObject {
     }
 
     public dropItems(): Item[] {
-        let drops =this.drops.map(drop =>{
+        let drops = this.drops.map(drop => {
             drop.x = this.x + this.width / 2
             drop.y = this.y
             return drop
@@ -98,6 +98,10 @@ class Enemy implements GameObject {
         if (this.hp <= 0) {
             this.vx = 0
         }
+    }
+
+    public translate() {
+
     }
 
 

@@ -28,14 +28,14 @@ class Level4 extends Level {
 
         this.enemies = [
 
-            new Skeleton(1200, 400, -2),
+            new Skeleton(1200, 400, -2, null),
             new Zombie(1500, 400, 2),
             new Zombie(1600, 400, 1.5),
-            new Skeleton(2000, 400, -2),
+            new Skeleton(2000, 400, -2, null),
             new Zombie(1200, 400, -3),
             new Zombie(1300, 400, 4),
 
-            new Skeleton(3600, 100, -3),
+            new Skeleton(3600, 100, -3, null),
             new Zombie(3800, 100, -1),
         ]
 

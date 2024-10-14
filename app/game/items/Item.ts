@@ -1,4 +1,5 @@
 import GameObject from '../GameObject'
+import Translate from '../Translation'
 
 class Item implements GameObject {
 
@@ -12,9 +13,9 @@ class Item implements GameObject {
     }
 
 
-    public draw = (ctx: any, offset: number) => {
+    public draw = (ctx: any, offsetX: number, offsetY: number) => {
         ctx.save()
-        ctx.translate(-offset, 0)
+        ctx.translate(Translate.x - offsetX + this.x, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
 
         // ctx.rotate(this.direction*Math.PI/2);
         ctx.font = "30px Arial";

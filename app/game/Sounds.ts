@@ -23,6 +23,11 @@ class Sounds {
         audio.play();
     }
 
+    public static song1 = () =>{
+        let audio = new Audio('sounds/song1.mp3')
+        audio.play()
+    }
+
 
 }
 

@@ -9,6 +9,7 @@ import Door from '../platforms/Door'
 import Item from '../items/Item'
 import Key from '../items/Key'
 import Player from '../Player'
+import Translate from '../Translation'
 import {
     detectPlayerPlatformCollision,
     detectPlayerWallCollision,
@@ -91,24 +92,27 @@ class Level {
 
 
     public detectPlayerPlatformCollisions = () => {
-        this.platforms.map(p => {
+        this.platforms.map((p, idx) => {
+
             if (detectPlayerPlatformCollision(this.player, p)) {
                 this.player.y = p.y - this.player.height
                 if (this.player.vy > 0) this.player.vy = 0
+
             }
+
             if (p instanceof Ground || p instanceof Wall)
                 if (detectPlayerWallCollision(this.player, p)) {
                     this.player.vx = 0
                     this.player.x -= this.player.direction * 5
                 }
-            if (p instanceof Door) {
 
+            if (p instanceof Door) {
                 if (detectPlayerDoorCollision(this.player, p)) {
-                    this.player.items.map((item, idx) => {
+                    this.player.items.map((item, itemIdx) => {
                         if (item instanceof Key) {
                             if (p.locked) {
-                                p.locked = false
-                                this.player.items.splice(idx, 1)
+                                this.platforms.splice(idx, 1)
+                                this.player.items.splice(itemIdx, 1)
                             }
                         }
                     })
@@ -117,10 +121,8 @@ class Level {
                         this.player.x -= this.player.direction * 5
                     }
                 }
-
-
-
             }
+
         })
     }
 
@@ -152,7 +154,7 @@ class Level {
         if (this.player.y > this.deathPlane) {
             this.player.y = 100
             this.player.vy = 0
-            this.player.x = 0
+            this.player.x = 500
             this.player.takeDamage()
         }
     }
@@ -161,12 +163,12 @@ class Level {
     public drawToCanvas = () => {
         this.ctx.clearRect(0, 0, this.width, this.height);
 
-        this.drawSky(this.player.x);
+        this.drawSky(this.player.x, this.player.y);
 
-        this.platforms.map(o => o.draw(this.ctx, this.player.x))
-        this.goal.draw(this.ctx, this.player.x)
-        this.enemies.map(e => e.draw(this.ctx, this.player.x))
-        this.items.map(i => i.draw(this.ctx, this.player.x))
+        this.platforms.map(o => o.draw(this.ctx, this.player.x, this.player.y))
+        this.goal.draw(this.ctx, this.player.x, this.player.y)
+        this.enemies.map(e => e.draw(this.ctx, this.player.x, this.player.y))
+        this.items.map(i => i.draw(this.ctx, this.player.x, this.player.y))
         this.player.draw(this.ctx)
     }
 
@@ -179,17 +181,17 @@ class Level {
     }
 
 
-    public drawSky = (offset: number) => {
+    public drawSky = (offsetX: number, offsetY: number) => {
         this.ctx.save()
-        this.ctx.translate(-offset / 2, 0)
+        this.ctx.translate(-offsetX / 2, offsetY < Translate.thresholdY ? -offsetY/4 : -Translate.thresholdY/4)
         this.ctx.fillStyle = this.skyBackground(this.ctx)
-        this.ctx.fillRect(-this.width, 0, this.width * 10, this.height)
+        this.ctx.fillRect(-this.width, -this.height, this.width * 5, this.height * 5)
         this.ctx.restore()
     }
 
     public skyBackground(ctx: any) {
         if (this.sky == null) {
-            let image = new Image(80, 80)
+            let image = new Image()
             image.src = 'images/clouds.png'
             this.sky = ctx.createPattern(image, "repeat");
         }

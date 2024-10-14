@@ -6,13 +6,13 @@ import { detectEnemyPlatformCollision } from '../CollisionDetection'
 import Translate from '../Translation'
 import Patterns from '../Patterns'
 
-class Skeleton extends Enemy {
+class Slime extends Enemy {
 
     public resurrection = 0
 
     public constructor(x: number, y: number, vx: number, drop: Key | null) {
         let direction = vx > 0 ? 1 : -1
-        super(1, x, y, 60, 100, "", direction, vx, drop)
+        super(1, x, y, 50, 35, "", direction, vx, drop)
 
         this.initialX = x;
         this.direction = direction
@@ -36,13 +36,12 @@ class Skeleton extends Enemy {
         ctx.save()
         ctx.translate(Translate.x - offsetX + this.x, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
         if (this.hp <= 0) {
-            ctx.fillStyle = Patterns.getDeadSkeletonPattern(ctx)
-            ctx.translate(0, 70)
-            ctx.fillRect(0, 0, this.height, this.width)
+            ctx.fillStyle = Patterns.getDeadSlimePattern(ctx)
+            ctx.fillRect(0, 0, this.width, this.height)
             ctx.restore()
         }
         else {
-            ctx.fillStyle = Patterns.getSkeletonPattern(ctx)
+            ctx.fillStyle = Patterns.getSlimePattern(ctx)
             ctx.scale(-this.direction, 1)
             if (this.direction > 0)
                 ctx.translate(-this.width, 0)
@@ -55,4 +54,4 @@ class Skeleton extends Enemy {
 
 }
 
-export default Skeleton
+export default Slime

@@ -3,12 +3,17 @@ import Platform from '../platforms/Platform'
 import Ground from '../platforms/Ground'
 import Wall from '../platforms/Wall'
 import Door from '../platforms/Door'
-import Zombie from '../enemies/Zombie'
 import Key from '../items/Key'
-import Skeleton from '../enemies/Skeleton'
 import Goal from '../Goal'
 
-class Level5 extends Level {
+import Zombie from '../enemies/Zombie'
+import Bat from '../enemies/Bat'
+import Skeleton from '../enemies/Skeleton'
+import Slime from '../enemies/Slime'
+
+
+
+class Level6 extends Level {
 
     public constructor() {
         super()
@@ -30,11 +35,13 @@ class Level5 extends Level {
 
         this.enemies = [
 
-            new Skeleton(120, 400, -1, new Key()),
-            // new Skeleton(1200, 400, -2), 
-            // new Zombie(1300, 400, 4),
+            new Skeleton(120, 400, -1, null),
+            new Bat(200, 300, 3, null),
+            new Slime(1200, 300, 3, null),
+            new Bat(600, 300, 3, null),
+            new Slime(1400, 300, -2, null),
+            new Bat(850, 300, 3, new Key()),
             new Zombie(1500, 400, 2),
-            // new Zombie(1600, 400, 1.5),
             new Skeleton(1940, 400, -2, new Key()),
 
         ]
@@ -58,4 +65,4 @@ class Level5 extends Level {
 
 }
 
-export default Level5;
+export default Level6;

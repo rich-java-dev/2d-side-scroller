@@ -1,6 +1,6 @@
 import Platform from './platforms/Platform'
 import GameObject from './GameObject'
-import { playerScreenPosition } from './Constants';
+import Translate from './Translation';
 
 
 class Goal implements GameObject {
@@ -25,8 +25,8 @@ class Goal implements GameObject {
 
     }
 
-    public draw = (ctx: any, offset: number) => {
-        this.platforms.map(p => p.draw(ctx, offset))
+    public draw = (ctx: any, offsetX: number, offsetY: number) => {
+        this.platforms.map(p => p.draw(ctx, offsetX, offsetY))
     }
 
 }

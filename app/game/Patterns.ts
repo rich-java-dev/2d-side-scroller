@@ -17,6 +17,12 @@ class Patterns {
     private static skeletonPattern: any = null;
     private static deadSkeletonPattern: any = null;
 
+    private static batPattern: any = null;
+    private static deadBatPattern: any = null;
+
+    private static slimePattern: any = null;
+    private static deadSlimePattern: any = null;
+
 
     //
     // PLAYER
@@ -47,7 +53,7 @@ class Patterns {
     //
 
     public static getKeyPattern = (ctx: any) => {
-        if(Patterns.keyPattern == null) {
+        if (Patterns.keyPattern == null) {
             let image = new Image()
             image.src = 'images/key.png'
             Patterns.keyPattern = ctx.createPattern(image, "repeat");
@@ -117,6 +123,46 @@ class Patterns {
         }
         return Patterns.deadSkeletonPattern
     }
+
+
+    public static getBatPattern = (ctx: any) => {
+        if (Patterns.batPattern == null) {
+            let image = new Image()
+            image.src = 'images/bat.png'
+            Patterns.batPattern = ctx.createPattern(image, "no-repeat")
+        }
+        return Patterns.batPattern
+    }
+
+    public static getDeadBatPattern = (ctx: any) => {
+        if (Patterns.deadBatPattern == null) {
+            let image = new Image()
+            image.src = 'images/bat-dead.png'
+            Patterns.deadBatPattern = ctx.createPattern(image, "no-repeat")
+        }
+        return Patterns.deadBatPattern
+    }
+
+    public static getSlimePattern = (ctx: any) =>{
+        if(Patterns.slimePattern==null) {
+            let image = new Image()
+            image.src = 'images/slime.png'
+            Patterns.slimePattern = ctx.createPattern(image, "no-repeat")
+
+        }
+        return Patterns.slimePattern
+    }
+
+    public static getDeadSlimePattern = (ctx: any) =>{
+        if(Patterns.deadSlimePattern==null) {
+            let image = new Image()
+            image.src = 'images/slime-dead.png'
+            Patterns.deadSlimePattern = ctx.createPattern(image, "no-repeat")
+
+        }
+        return Patterns.deadSlimePattern
+    }
+
 
 
 }

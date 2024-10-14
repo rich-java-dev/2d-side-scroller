@@ -1,5 +1,6 @@
 import Item from './Item'
 import Patterns from '../Patterns'
+import Translate from '../Translation'
 
 class Key extends Item {
 
@@ -10,9 +11,9 @@ class Key extends Item {
         this.height = 50
     }
 
-    public draw = (ctx: any, offset: number) => {
+    public draw = (ctx: any, offsetX: number, offsetY: number) => {
         ctx.save()
-        ctx.translate(-offset + this.x, this.y)
+        ctx.translate(Translate.x - offsetX + this.x, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
 
         // ctx.rotate(this.direction*Math.PI/2);
         ctx.font = "30px Arial";

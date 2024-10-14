@@ -2,7 +2,7 @@ import Enemy from './Enemy'
 import Platform from '../platforms/Platform'
 import GameObject from '../GameObject'
 import { detectEnemyPlatformCollision } from '../CollisionDetection'
-import { playerScreenPosition } from '../Constants'
+import Translate from '../Translation'
 import Patterns from '../Patterns'
 
 class Zombie extends Enemy {
@@ -23,7 +23,7 @@ class Zombie extends Enemy {
         super.behavior()
         if (this.hp == 0) {
             this.resurrection += 0.1
-            if (this.resurrection > 10) {
+            if (this.resurrection > 13) {
                 this.resurrection = 0
                 this.hp = 1
                 this.vx = this.direction
@@ -31,9 +31,9 @@ class Zombie extends Enemy {
         }
     }
 
-    public draw = (ctx: any, offset: number) => {
+    public draw = (ctx: any, offsetX: number, offsetY: number) => {
         ctx.save()
-        ctx.translate(-offset + this.x, this.y)
+        ctx.translate(Translate.x - offsetX + this.x,  Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
 
         if (this.hp <= 0) {
             ctx.fillStyle = Patterns.getDeadZombiePattern(ctx)

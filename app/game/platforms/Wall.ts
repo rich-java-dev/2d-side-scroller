@@ -1,5 +1,6 @@
 import Platform from './Platform'
 import Patterns from '../Patterns'
+import Translate from '../Translation'
 
 
 class Wall extends Platform {
@@ -11,9 +12,9 @@ class Wall extends Platform {
         super(x, y, width, height, "green")
     }
 
-    public draw = (ctx: any, offset: number) => {
+    public draw = (ctx: any, offsetX: number, offsetY: number) => {
         ctx.save()
-        ctx.translate(-offset, 0)
+        ctx.translate(Translate.x-offsetX, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY))
 
         ctx.fillStyle = Patterns.getBrickPattern(ctx)
 

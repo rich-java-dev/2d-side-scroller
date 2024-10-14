@@ -1,5 +1,6 @@
 import Platform from './Platform'
 import Patterns from '../Patterns'
+import Translate from '../Translation'
 
 
 class Door extends Platform {
@@ -13,10 +14,11 @@ class Door extends Platform {
     }
 
 
-    public draw = (ctx: any, offset: number) => {
+    public draw = (ctx: any, offsetX: number, offsetY:number) => {
         if (this.locked) {
             ctx.save()
-            ctx.translate(-offset, 0)
+            ctx.translate(Translate.x-offsetX, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY))
+
 
             ctx.fillStyle = this.color//Patterns.getBrickPattern(ctx)
 

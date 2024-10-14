@@ -1,5 +1,6 @@
 import GameObject from '../GameObject'
 import Patterns from '../Patterns'
+import Translate from '../Translation'
 
 class Platform implements GameObject {
 
@@ -20,9 +21,9 @@ class Platform implements GameObject {
 
 
 
-    public draw = (ctx: any, offset: number) => {
+    public draw = (ctx: any, offsetX: number, offsetY: number) => {
         ctx.save()
-        ctx.translate(-offset, 0)
+        ctx.translate(Translate.x - offsetX, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY))
 
         ctx.fillStyle = Patterns.getBrickPattern(ctx)
 

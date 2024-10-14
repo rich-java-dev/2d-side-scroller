@@ -2,14 +2,14 @@ import Platform from './platforms/Platform'
 import GameObject from './GameObject'
 import Item from './items/Item'
 import { detectPlayerPlatformCollision } from './CollisionDetection'
-import { playerScreenPosition } from './Constants'
+import Translate from './Translation'
 import Sounds from './Sounds'
 import Patterns from './Patterns'
 
 class Player implements GameObject {
 
 
-    public x: number = 0
+    public x: number = 500
     public y: number = 0
     public width: number = 20
     public height: number = 100
@@ -35,7 +35,7 @@ class Player implements GameObject {
 
     public draw = (ctx: any) => {
         ctx.save();
-        ctx.translate(this.x, 0)
+        ctx.translate(this.x, this.y < Translate.thresholdY ? -this.y : -Translate.thresholdY)
         ctx.lineWidth = 8;
 
         if (this.invinsibility > 0 && Math.ceil(this.invinsibility) % 2 == 0) {
@@ -45,25 +45,29 @@ class Player implements GameObject {
 
         // body
         ctx.fillStyle = "black"
-        ctx.fillRect(playerScreenPosition - this.x - 5, this.y, 10, 50)
+        ctx.fillRect(Translate.x - this.x - 5, Translate.y + this.y, 10, 50)
 
         // arms
         ctx.strokeStyle = "black"
         ctx.beginPath();
-        ctx.moveTo(playerScreenPosition - this.x, this.y + 10);
-        ctx.lineTo(playerScreenPosition - this.x + 10 + 5 * Math.sin(this.action / 2) + (Math.ceil(Math.abs(this.x)) % 35) / 10, this.y + 60 + 5 * Math.sin(this.action / 2));
-        ctx.moveTo(playerScreenPosition - this.x, this.y + 10);
-        ctx.lineTo(playerScreenPosition - this.x - 10 - 5 * Math.sin(this.action / 2) - (Math.ceil(Math.abs(this.x)) % 35) / 10, this.y + 60 + 5 * Math.sin(this.action / 2));
+        ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 10);
+        ctx.lineTo(Translate.x - this.x + 10 + 5 * Math.sin(this.action / 2) + (Math.ceil(Math.abs(this.x)) % 35) / 10,
+            Translate.y + this.y + 60 + 5 * Math.sin(this.action / 2));
+        ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 10);
+        ctx.lineTo(Translate.x - this.x - 10 - 5 * Math.sin(this.action / 2) - (Math.ceil(Math.abs(this.x)) % 35) / 10,
+            Translate.y + this.y + 60 + 5 * Math.sin(this.action / 2));
         ctx.stroke();
 
 
         // legs
         ctx.strokeStyle = "black"
         ctx.beginPath();
-        ctx.moveTo(playerScreenPosition - this.x, this.y + 50);
-        ctx.lineTo(playerScreenPosition - this.x + 5 + (Math.ceil(Math.abs(this.x)) % 40) / 4, this.y + 100);
-        ctx.moveTo(playerScreenPosition - this.x, this.y + 50);
-        ctx.lineTo(playerScreenPosition - this.x - 5 - (Math.ceil(Math.abs(this.x)) % 40) / 4, this.y + 100);
+        ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 50);
+        ctx.lineTo(Translate.x - this.x + 5 + (Math.ceil(Math.abs(this.x)) % 40) / 4,
+            Translate.y + this.y + 100);
+        ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 50);
+        ctx.lineTo(Translate.x - this.x - 5 - (Math.ceil(Math.abs(this.x)) % 40) / 4,
+            Translate.y + this.y + 100);
         ctx.stroke();
 
 
@@ -71,22 +75,23 @@ class Player implements GameObject {
         //head
         ctx.fillStyle = "gray"
         ctx.beginPath();
-        ctx.arc(playerScreenPosition - this.x, this.y, 25, 0, Math.PI * 2, true); // draw circle for head
+        ctx.arc(Translate.x - this.x,
+            Translate.y + this.y, 25, 0,
+            Math.PI * 2, true); // draw circle for head
         ctx.fill()
 
 
         // sword
-
         if (this.sword) {
             ctx.fillStyle = Patterns.getSwordPattern(ctx)
             let rotateAngle = -2
 
             let swordOffset = this.direction == -1 ? 5 : -2
-            ctx.translate(playerScreenPosition - this.x + this.direction * 15 + swordOffset, this.y + 60 - swordOffset)
+            ctx.translate(Translate.x - this.x + this.direction * 15 + swordOffset,
+                Translate.y + this.y + 60 - swordOffset)
             ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
             ctx.fillRect(0, 0, 12, 85)
         }
-
 
         // hearts
         ctx.restore()
@@ -116,8 +121,6 @@ class Player implements GameObject {
         this.x = this.x + this.vx;
         this.y = this.y + this.vy;
     }
-
-
 
 
     public applyGravity = () => {
