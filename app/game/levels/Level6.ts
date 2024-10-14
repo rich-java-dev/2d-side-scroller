@@ -17,6 +17,10 @@ class Level6 extends Level {
 
     public constructor() {
         super()
+
+        this.player.sword=false
+        this.player.bow=true
+
         this.player.y = 400
         this.platforms = [
             new Wall(0, 100, 100, 800),
@@ -49,7 +53,7 @@ class Level6 extends Level {
 
         this.goal = new Goal(2300, 570)
 
-        this.hint = "Find the Key!"
+        this.hint = "TAB toggles between Sword and Bow"
 
     }
 

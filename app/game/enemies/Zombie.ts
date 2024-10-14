@@ -33,7 +33,7 @@ class Zombie extends Enemy {
 
     public draw = (ctx: any, offsetX: number, offsetY: number) => {
         ctx.save()
-        ctx.translate(Translate.x - offsetX + this.x,  Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
+        ctx.translate(Translate.x - offsetX + this.x, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
 
         if (this.hp <= 0) {
             ctx.fillStyle = Patterns.getDeadZombiePattern(ctx)

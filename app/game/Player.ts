@@ -18,10 +18,15 @@ class Player implements GameObject {
     public vx: number = 0
     public vy: number = 0
 
-    public action: number = 0
+
     public invinsibility: number = 0
 
     public sword: boolean = true
+    public action: number = 0
+
+    public bow: boolean = false
+    public bowAction: number = 0
+    public fireArrow: boolean = false
 
     public direction: number = 1
 
@@ -49,14 +54,23 @@ class Player implements GameObject {
 
         // arms
         ctx.strokeStyle = "black"
-        ctx.beginPath();
-        ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 10);
-        ctx.lineTo(Translate.x - this.x + 10 + 5 * Math.sin(this.action / 2) + (Math.ceil(Math.abs(this.x)) % 35) / 10,
-            Translate.y + this.y + 60 + 5 * Math.sin(this.action / 2));
-        ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 10);
-        ctx.lineTo(Translate.x - this.x - 10 - 5 * Math.sin(this.action / 2) - (Math.ceil(Math.abs(this.x)) % 35) / 10,
-            Translate.y + this.y + 60 + 5 * Math.sin(this.action / 2));
-        ctx.stroke();
+        if (this.bow) {
+            ctx.beginPath();
+            ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 30);
+            ctx.lineTo(Translate.x - this.x + 30 * this.direction, Translate.y + this.y + 30);
+            ctx.stroke();
+        } else {
+            ctx.beginPath();
+            ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 10);
+            ctx.lineTo(Translate.x - this.x + 10 + 5 * Math.sin(this.action / 2) + (Math.ceil(Math.abs(this.x)) % 35) / 10,
+                Translate.y + this.y + 60 + 5 * Math.sin(this.action / 2));
+            ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 10);
+            ctx.lineTo(Translate.x - this.x - 10 - 5 * Math.sin(this.action / 2) - (Math.ceil(Math.abs(this.x)) % 35) / 10,
+                Translate.y + this.y + 60 + 5 * Math.sin(this.action / 2));
+            ctx.stroke();
+        }
+
+
 
 
         // legs
@@ -91,6 +105,17 @@ class Player implements GameObject {
                 Translate.y + this.y + 60 - swordOffset)
             ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
             ctx.fillRect(0, 0, 12, 85)
+        }
+
+        //bow
+        if (this.bow) {
+            ctx.strokeStyle = "brown"
+            let bowOffset = this.direction == -1 ? 5 : -2
+            ctx.beginPath();
+            ctx.arc(Translate.x - this.x + this.direction * 15 + bowOffset,
+                Translate.y + this.y + 30, 25, this.direction * Math.PI / 2, -1 * this.direction * Math.PI / 2, true); // draw circle for head
+            ctx.stroke()
+
         }
 
         // hearts
@@ -142,6 +167,11 @@ class Player implements GameObject {
         }
         if (this.action >= 6.3)
             this.action = 0;
+
+        if (this.bowAction > 0 && this.bowAction <= 30) {
+            this.bowAction += 0.25
+        }
+
     }
 
     public takeDamage = () => {
@@ -162,7 +192,7 @@ class Player implements GameObject {
         switch (evt.type) {
 
             case "keydown":
-
+                console.log(evt.keyCode)
                 switch (evt.keyCode) {
                     case 37: // left arrow
                         this.vx = -5;
@@ -186,6 +216,14 @@ class Player implements GameObject {
                             this.action++
                             Sounds.swingSound()
                         }
+                        else if (this.bow && this.bowAction == 0) {
+                            this.bowAction += 0.1
+                        }
+                        break;
+
+                    case 16: // Shift
+                        this.sword = !this.sword
+                        this.bow = !this.bow
                         break;
                 }
                 break;
@@ -200,6 +238,12 @@ class Player implements GameObject {
                         this.direction = 1;
                         this.vx = 0;
                         break;
+                    case 32: //space
+                        if (this.bow && this.bowAction > 0) {
+                            this.fireArrow = true
+                            Sounds.swingSound()
+                        }
+
                 }
                 break;
 

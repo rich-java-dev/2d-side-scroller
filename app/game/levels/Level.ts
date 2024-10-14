@@ -1,6 +1,7 @@
 
 import Goal from '../Goal'
 import Enemy from '../enemies/Enemy'
+import Projectile from '../Projectile'
 import GameObject from '../GameObject'
 import Platform from '../platforms/Platform'
 import Ground from '../platforms/Ground'
@@ -16,6 +17,7 @@ import {
     detectPlayerHitEnemy,
     detectPlayerDoorCollision,
     detectPlayerItemCollision,
+    detectProjectileHitEnemy,
 
     detectEnemyPlatformCollision,
     detectEnemyWallCollision,
@@ -36,6 +38,8 @@ class Level {
     public ctx: any;
 
     public player: Player = new Player()
+    public projectiles: Projectile[] = []
+
     public goal: Goal = new Goal(5000, 0)
     public enemies: Enemy[] = []
     public platforms: Platform[] = []
@@ -59,13 +63,23 @@ class Level {
 
 
     public update = () => {
-
         this.player.update()
         this.detectPlayerFallDamage()
         this.detectPlayerPlatformCollisions()
         this.detectPlayerItemCollisions()
+        this.detectPlayerFireArrow()
+        this.updateProjectiles()
+        this.updateAllEnemies()
+    }
 
+    public updateProjectiles = () => {
+        this.projectiles.map((p, idx) => {
+            p.update()
+            if (p.time > p.duration) this.projectiles.splice(idx, 1)
+        })
+    }
 
+    public updateAllEnemies = () => {
         this.enemies.map(enemy => {
             enemy.update()
             this.detectEnemyPlatformCollisions(enemy)
@@ -79,6 +93,17 @@ class Level {
                 // let idx = this.enemies.indexOf(enemy)
                 // this.enemies.splice(idx, 1)
             }
+
+            this.projectiles.map((p) => {
+                if (detectProjectileHitEnemy(p, enemy)) {
+                    enemy.takeDamage()
+                    if (enemy.hp <= 0) {
+                        let drops = enemy.dropItems()
+                        this.items = [...this.items, ...drops]
+                    }
+                }
+            })
+
             if (detectEnemyPlayerCollision(this.player, enemy)) {
                 this.player.takeDamage()
                 this.player.vx = 0
@@ -87,9 +112,7 @@ class Level {
 
             detectPlayerHitEnemy(this.player, enemy)
         })
-
     }
-
 
     public detectPlayerPlatformCollisions = () => {
         this.platforms.map((p, idx) => {
@@ -126,6 +149,7 @@ class Level {
         })
     }
 
+
     public detectPlayerItemCollisions = () => {
         this.items.map((item, idx) => {
             if (detectPlayerItemCollision(this.player, item)) {
@@ -133,6 +157,14 @@ class Level {
                 this.items.splice(idx, 1)
             }
         })
+    }
+
+    public detectPlayerFireArrow = () => {
+        if (this.player.fireArrow) {
+            this.projectiles.push(new Projectile(this.player.x, this.player.y, this.player.direction * this.player.bowAction))
+            this.player.fireArrow = false
+            this.player.bowAction = 0
+        }
     }
 
     public detectEnemyPlatformCollisions = (enemy: Enemy) => {
@@ -169,6 +201,10 @@ class Level {
         this.goal.draw(this.ctx, this.player.x, this.player.y)
         this.enemies.map(e => e.draw(this.ctx, this.player.x, this.player.y))
         this.items.map(i => i.draw(this.ctx, this.player.x, this.player.y))
+        this.projectiles.map(p => {
+            console.log("Drawing Projectile")
+            p.draw(this.ctx, this.player.x, this.player.y)
+        })
         this.player.draw(this.ctx)
     }
 
@@ -180,10 +216,9 @@ class Level {
         this.ctx.fillText(this.hint, 10, 100)
     }
 
-
     public drawSky = (offsetX: number, offsetY: number) => {
         this.ctx.save()
-        this.ctx.translate(-offsetX / 2, offsetY < Translate.thresholdY ? -offsetY/4 : -Translate.thresholdY/4)
+        this.ctx.translate(-offsetX / 2, offsetY < Translate.thresholdY ? -offsetY / 4 : -Translate.thresholdY / 4)
         this.ctx.fillStyle = this.skyBackground(this.ctx)
         this.ctx.fillRect(-this.width, -this.height, this.width * 5, this.height * 5)
         this.ctx.restore()

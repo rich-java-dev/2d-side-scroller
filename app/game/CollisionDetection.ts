@@ -1,6 +1,7 @@
 import GameObject from './GameObject'
 import Player from './Player'
 import Enemy from './enemies/Enemy'
+import Projectile from './Projectile'
 import Door from './platforms/Door'
 import Item from './items/Item'
 import Key from './items/Key'
@@ -73,9 +74,13 @@ const detectGoalCollision = (o1: Player, o2: GameObject): boolean => {
         && o2.y < o1.y
         && o2.y + o2.height > o1.y
     )
-
-
 }
+
+const detectProjectileHitEnemy = (o1: Projectile, o2: Enemy) => {
+    return detectEnemyWallCollision(o2, o1)
+}
+
+
 
 export {
     detectPlayerPlatformCollision,
@@ -87,6 +92,7 @@ export {
     detectEnemyPlatformCollision,
     detectEnemyWallCollision,
     detectEnemyPlayerCollision,
+    detectProjectileHitEnemy,
 
     detectGoalCollision,
 }

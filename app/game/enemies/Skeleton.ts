@@ -30,6 +30,13 @@ class Skeleton extends Enemy {
                 this.vx = this.direction
             }
         }
+        else {
+            this.action += 0.1
+            if (this.action >= 15) {
+                this.vy = -12
+                this.action = 0
+            }
+        }
     }
 
     public draw = (ctx: any, offsetX: number, offsetY: number) => {
