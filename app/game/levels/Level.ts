@@ -161,7 +161,9 @@ class Level {
 
     public detectPlayerFireArrow = () => {
         if (this.player.fireArrow) {
-            this.projectiles.push(new Projectile(this.player.x, this.player.y, this.player.direction * this.player.bowAction))
+            const arrowX = (this.player.bowUp ? 1 / Math.SQRT2 : 1) * this.player.direction * this.player.bowAction
+            const arrowY = (this.player.bowUp ? -1 / Math.SQRT2 : 0) * this.player.bowAction
+            this.projectiles.push(new Projectile(this.player.x, this.player.y, arrowX, arrowY))
             this.player.fireArrow = false
             this.player.bowAction = 0
         }

@@ -27,6 +27,7 @@ class Player implements GameObject {
     public bow: boolean = false
     public bowAction: number = 0
     public fireArrow: boolean = false
+    public bowUp: boolean = false
 
     public direction: number = 1
 
@@ -55,9 +56,10 @@ class Player implements GameObject {
         // arms
         ctx.strokeStyle = "black"
         if (this.bow) {
+            let bowAngle = this.bowUp ? -20 : 0
             ctx.beginPath();
             ctx.moveTo(Translate.x - this.x, Translate.y + this.y + 30);
-            ctx.lineTo(Translate.x - this.x + 30 * this.direction, Translate.y + this.y + 30);
+            ctx.lineTo(Translate.x - this.x + 35 * this.direction, Translate.y + this.y + 30 + bowAngle);
             ctx.stroke();
         } else {
             ctx.beginPath();
@@ -71,8 +73,6 @@ class Player implements GameObject {
         }
 
 
-
-
         // legs
         ctx.strokeStyle = "black"
         ctx.beginPath();
@@ -83,7 +83,6 @@ class Player implements GameObject {
         ctx.lineTo(Translate.x - this.x - 5 - (Math.ceil(Math.abs(this.x)) % 40) / 4,
             Translate.y + this.y + 100);
         ctx.stroke();
-
 
 
         //head
@@ -107,16 +106,19 @@ class Player implements GameObject {
             ctx.fillRect(0, 0, 12, 85)
         }
 
+
         //bow
         if (this.bow) {
             ctx.strokeStyle = "brown"
             let bowOffset = this.direction == -1 ? 5 : -2
+            let bowAngleX = this.bowUp ? Math.PI / 4 : Math.PI / 2
+            let bowAngleY = this.bowUp ? 3 * Math.PI / 4 : Math.PI / 2
             ctx.beginPath();
             ctx.arc(Translate.x - this.x + this.direction * 15 + bowOffset,
-                Translate.y + this.y + 30, 25, this.direction * Math.PI / 2, -1 * this.direction * Math.PI / 2, true); // draw circle for head
+                Translate.y + this.y + 30, 25, this.direction * bowAngleX, -1 * this.direction * bowAngleY, true); // draw circle for head
             ctx.stroke()
-
         }
+
 
         // hearts
         ctx.restore()
@@ -124,6 +126,7 @@ class Player implements GameObject {
             ctx.fillStyle = Patterns.getHeartPattern(ctx)
             ctx.fillRect((i + 1) * 50, 150, 50, 50)
         }
+
 
         // items
         this.items.map((item, idx) => {
@@ -193,6 +196,7 @@ class Player implements GameObject {
 
             case "keydown":
                 console.log(evt.keyCode)
+
                 switch (evt.keyCode) {
                     case 37: // left arrow
                         this.vx = -5;
@@ -205,7 +209,11 @@ class Player implements GameObject {
                         break;
 
                     case 38: // up arrow
-                        if (this.vy == 0) {
+
+                        if (this.bowAction > 0) {
+                            this.bowUp = true;
+                        }
+                        else if (this.vy == 0) {
                             this.vy = -20;
                             Sounds.jumpSound()
                         }
@@ -234,15 +242,22 @@ class Player implements GameObject {
                         this.direction = -1;
                         this.vx = 0;
                         break;
+
                     case 39: //right arrow
                         this.direction = 1;
                         this.vx = 0;
                         break;
+
+                    case 38: // up arrow
+                        this.bowUp = false
+                        break;
+
                     case 32: //space
                         if (this.bow && this.bowAction > 0) {
                             this.fireArrow = true
                             Sounds.swingSound()
                         }
+                        break;
 
                 }
                 break;

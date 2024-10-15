@@ -35,7 +35,6 @@ class Level7 extends Level {
 
         ]
 
-
         this.goal = new Goal(3025, 570)
 
         this.hint = "Prepare for a Boss Fight!"

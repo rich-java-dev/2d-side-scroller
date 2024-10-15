@@ -31,7 +31,7 @@ class LevelManager {
             new Level4(),
             new Level5(),
             new Level6(),
-            new Level7(),
+            // new Level7(),
         ]
     }
 
