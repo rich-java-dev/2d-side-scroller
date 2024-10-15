@@ -98,8 +98,9 @@ class Level {
                 // this.enemies.splice(idx, 1)
             }
 
-            this.projectiles.map((p) => {
+            this.projectiles.map((p, idx) => {
                 if (detectProjectileHitEnemy(p, enemy)) {
+                    this.projectiles.splice(idx, 1)
                     enemy.takeDamage()
                     if (enemy.hp <= 0) {
                         let drops = enemy.dropItems()

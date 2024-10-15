@@ -80,7 +80,7 @@ class Enemy implements GameObject {
     public dropItems(): Item[] {
         let drops = this.drops.map(drop => {
             drop.x = this.x + this.width / 2
-            drop.y = this.y
+            drop.y = this.y + this.height / 2
             return drop
         })
 

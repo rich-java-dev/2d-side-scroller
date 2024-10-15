@@ -23,6 +23,9 @@ class Patterns {
     private static slimePattern: any = null;
     private static deadSlimePattern: any = null;
 
+    public static eyeballPattern: any = null;
+    public static deadEyeballPattern: any = null;
+
 
     //
     // PLAYER
@@ -143,8 +146,8 @@ class Patterns {
         return Patterns.deadBatPattern
     }
 
-    public static getSlimePattern = (ctx: any) =>{
-        if(Patterns.slimePattern==null) {
+    public static getSlimePattern = (ctx: any) => {
+        if (Patterns.slimePattern == null) {
             let image = new Image()
             image.src = 'images/slime.png'
             Patterns.slimePattern = ctx.createPattern(image, "no-repeat")
@@ -153,14 +156,33 @@ class Patterns {
         return Patterns.slimePattern
     }
 
-    public static getDeadSlimePattern = (ctx: any) =>{
-        if(Patterns.deadSlimePattern==null) {
+    public static getDeadSlimePattern = (ctx: any) => {
+        if (Patterns.deadSlimePattern == null) {
             let image = new Image()
             image.src = 'images/slime-dead.png'
             Patterns.deadSlimePattern = ctx.createPattern(image, "no-repeat")
 
         }
         return Patterns.deadSlimePattern
+    }
+
+    public static getEyeballPattern = (ctx: any) => {
+        if (Patterns.eyeballPattern == null) {
+            let image = new Image()
+            image.src = 'images/eyeball.png'
+            Patterns.eyeballPattern = ctx.createPattern(image, "no-repeat")
+
+        }
+        return Patterns.eyeballPattern
+    }
+
+    public static getDeadEyeballPattern = (ctx: any) => {
+        if (Patterns.deadEyeballPattern == null) {
+            let image = new Image()
+            image.src = 'images/eyeball.png'
+            Patterns.deadEyeballPattern = ctx.createPattern(image, "no-repeat")
+        }
+        return Patterns.deadEyeballPattern
     }
 
 

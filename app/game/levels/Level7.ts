@@ -10,7 +10,7 @@ import Zombie from '../enemies/Zombie'
 import Bat from '../enemies/Bat'
 import Skeleton from '../enemies/Skeleton'
 import Slime from '../enemies/Slime'
-
+import Eyeball from '../enemies/Eyeball'
 
 
 class Level7 extends Level {
@@ -37,6 +37,8 @@ class Level7 extends Level {
         ]
 
         this.enemies = [
+            new Eyeball(1500, 200, 5, null),
+            //new Skeleton(1200, 500, 1, new Key()),
 
         ]
 
