@@ -12,7 +12,13 @@ class Level5 extends Level {
 
     public constructor() {
         super()
-        this.player.y = 400
+        
+        
+        this.spawnX = 600
+        this.spawnY = 400
+        this.player.x = this.spawnX
+        this.player.y = this.spawnY
+
         this.platforms = [
             new Wall(0, 100, 100, 800),
             new Wall(0, 100, 2000, 100),
@@ -33,7 +39,7 @@ class Level5 extends Level {
             new Skeleton(120, 400, -1, new Key()),
             // new Skeleton(1200, 400, -2), 
             // new Zombie(1300, 400, 4),
-            new Zombie(1500, 400, 2),
+            new Zombie(1500, 400, 2, null),
             // new Zombie(1600, 400, 1.5),
             new Skeleton(1940, 400, -2, new Key()),
 

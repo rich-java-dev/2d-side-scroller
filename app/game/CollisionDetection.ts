@@ -51,6 +51,10 @@ const detectPlayerDoorCollision = (o1: Player, o2: Door): boolean => {
     return (o2.locked && detectPlayerWallCollision(o1, o2))
 }
 
+const detectPlayerTrapDoorCollision = (o1: Player, o2: Door): boolean => {
+    return (o2.locked && detectPlayerPlatformCollision(o1, o2))
+}
+
 const detectEnemyWallCollision = (o1: Enemy, o2: GameObject): boolean => {
     return (o2.x < o1.x + o1.width
         && (o2.x + o2.width > o1.x + o1.width || o2.x + o2.width > o1.x)
@@ -87,6 +91,7 @@ export {
     detectPlayerWallCollision,
     detectPlayerItemCollision,
     detectPlayerDoorCollision,
+    detectPlayerTrapDoorCollision,
     detectPlayerHitEnemy,
 
     detectEnemyPlatformCollision,

@@ -10,6 +10,11 @@ class Level3 extends Level {
     public constructor() {
         super()
 
+        this.spawnX = 600
+        this.spawnY = 400
+        this.player.x = this.spawnX
+        this.player.y = this.spawnY
+
         this.platforms = [
             new Ground(0, 700 + 70, 3000, 900),
             new Platform(200, 700 + 30, 800, 50, "brown"),
@@ -19,14 +24,14 @@ class Level3 extends Level {
         ]
 
         this.enemies = [
-            new Zombie(900, 400, 1),
-            new Zombie(1200, 400, -2),
-            new Zombie(1500, 400, 2),
-            new Zombie(1600, 400, 1.5),
-            new Zombie(2000, 400, -2),
-            new Zombie(1300, 400, 4),
-            new Zombie(2500, 400, -3),
-            new Zombie(2200, 400, -1),
+            new Zombie(900, 400, 1, null),
+            new Zombie(1200, 400, -2, null),
+            new Zombie(1500, 400, 2, null),
+            new Zombie(1600, 400, 1.5, null),
+            new Zombie(2000, 400, -2, null),
+            new Zombie(1300, 400, 4, null),
+            new Zombie(2500, 400, -3, null),
+            new Zombie(2200, 400, -1, null),
         ]
 
 

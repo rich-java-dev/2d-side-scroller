@@ -7,6 +7,7 @@ import Platform from '../platforms/Platform'
 import Ground from '../platforms/Ground'
 import Wall from '../platforms/Wall'
 import Door from '../platforms/Door'
+import TrapDoor from '../platforms/TrapDoor'
 import Item from '../items/Item'
 import Key from '../items/Key'
 import Player from '../Player'
@@ -16,6 +17,7 @@ import {
     detectPlayerWallCollision,
     detectPlayerHitEnemy,
     detectPlayerDoorCollision,
+    detectPlayerTrapDoorCollision,
     detectPlayerItemCollision,
     detectProjectileHitEnemy,
 
@@ -45,6 +47,8 @@ class Level {
     public platforms: Platform[] = []
     public items: Item[] = []
 
+    public spawnX: number = 100
+    public spawnY: number = 500
 
     public deathPlane: number = 2000
 
@@ -117,17 +121,19 @@ class Level {
     public detectPlayerPlatformCollisions = () => {
         this.platforms.map((p, idx) => {
 
+
             if (detectPlayerPlatformCollision(this.player, p)) {
                 this.player.y = p.y - this.player.height
                 if (this.player.vy > 0) this.player.vy = 0
 
             }
 
-            if (p instanceof Ground || p instanceof Wall)
+            if (p instanceof Ground || p instanceof Wall) {
                 if (detectPlayerWallCollision(this.player, p)) {
                     this.player.vx = 0
                     this.player.x -= this.player.direction * 5
                 }
+            }
 
             if (p instanceof Door) {
                 if (detectPlayerDoorCollision(this.player, p)) {
@@ -145,6 +151,22 @@ class Level {
                     }
                 }
             }
+
+
+            if (p instanceof TrapDoor) {
+                if (detectPlayerTrapDoorCollision(this.player, p)) {
+                    this.player.items.map((item, itemIdx) => {
+                        if (item instanceof Key) {
+                            if (p.locked) {
+                                this.platforms.splice(idx, 1)
+                                this.player.items.splice(itemIdx, 1)
+                            }
+                        }
+                    })
+                }
+            }
+
+
 
         })
     }
@@ -186,9 +208,9 @@ class Level {
 
     public detectPlayerFallDamage = () => {
         if (this.player.y > this.deathPlane) {
-            this.player.y = 100
+            this.player.y = this.spawnY
             this.player.vy = 0
-            this.player.x = 500
+            this.player.x = this.spawnX
             this.player.takeDamage()
         }
     }

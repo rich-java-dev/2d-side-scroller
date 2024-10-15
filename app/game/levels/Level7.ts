@@ -18,10 +18,15 @@ class Level7 extends Level {
     public constructor() {
         super()
 
+
+        this.spawnX = 600
+        this.spawnY = 400
+        this.player.x = this.spawnX
+        this.player.y = this.spawnY
+
         this.player.sword = false
         this.player.bow = true
 
-        this.player.y = 400
         this.platforms = [
             new Ground(0, 700 + 70, 4000, 900),
 
