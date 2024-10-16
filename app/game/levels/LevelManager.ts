@@ -7,6 +7,7 @@ import Level4 from './Level4'
 import Level5 from './Level5'
 import Level6 from './Level6'
 import Level7 from './Level7'
+import Level8 from './Level8'
 
 import Sounds from '../Sounds'
 
@@ -31,6 +32,7 @@ class LevelManager {
             new Level4(),
             new Level5(),
             new Level6(),
+            new Level8(),
             new Level7(),
         ]
     }
@@ -45,9 +47,18 @@ class LevelManager {
 
     public step = () => {
         if (this.gameOver) {
-            this.ctx.font = "100px Arial bold";
+            this.ctx.font = "75px Arial bold";
             this.ctx.fillStyle = "red"
-            this.ctx.fillText("GAME OVER", 180, 400);
+
+            let message = "GAME OVER - Press R to retry"
+            if (this.levels.length == 0)
+                message = "YOU WON!"
+
+            this.ctx.fillText(message, 180, 400);
+
+            if (this.activeLevel.player.hp > 0)
+                this.gameOver = false
+
             return;
         }
 

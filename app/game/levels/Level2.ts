@@ -9,7 +9,7 @@ class Level2 extends Level {
     public constructor() {
         super()
 
-
+        this.player.weaponsDisabled = true
         this.spawnX = 600
         this.spawnY = 400
         this.player.x = this.spawnX

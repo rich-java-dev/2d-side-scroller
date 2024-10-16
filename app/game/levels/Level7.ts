@@ -37,9 +37,7 @@ class Level7 extends Level {
         ]
 
         this.enemies = [
-            new Eyeball(1500, 200, 5, null),
-            //new Skeleton(1200, 500, 1, new Key()),
-
+            new Eyeball(1500, 200, 4, null),
         ]
 
         this.goal = new Goal(3025, 570)

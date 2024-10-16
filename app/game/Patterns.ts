@@ -179,7 +179,7 @@ class Patterns {
     public static getDeadEyeballPattern = (ctx: any) => {
         if (Patterns.deadEyeballPattern == null) {
             let image = new Image()
-            image.src = 'images/eyeball.png'
+            image.src = 'images/eyeball-dead.png'
             Patterns.deadEyeballPattern = ctx.createPattern(image, "no-repeat")
         }
         return Patterns.deadEyeballPattern

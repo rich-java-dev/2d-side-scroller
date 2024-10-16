@@ -58,8 +58,8 @@ class Eyeball extends Enemy {
         ctx.translate(Translate.x - offsetX + this.x, Translate.y - (offsetY < Translate.thresholdY ? offsetY : Translate.thresholdY) + this.y)
         if (this.hp <= 0) {
             ctx.fillStyle = Patterns.getDeadEyeballPattern(ctx)
-            ctx.translate(0, 70)
-            ctx.fillRect(0, 0, this.height, this.width)
+            // ctx.translate(0, 70)
+            ctx.fillRect(0, 0, this.width + 300, this.height + 50)
             ctx.restore()
         }
         else {

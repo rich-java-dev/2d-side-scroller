@@ -21,6 +21,8 @@ class Player implements GameObject {
 
     public invinsibility: number = 0
 
+
+    public weaponsDisabled = false
     public sword: boolean = true
     public action: number = 0
 
@@ -98,17 +100,15 @@ class Player implements GameObject {
         if (this.sword) {
             ctx.fillStyle = Patterns.getSwordPattern(ctx)
             let rotateAngle = -2
-
             let swordOffset = this.direction == -1 ? 5 : -2
             ctx.translate(Translate.x - this.x + this.direction * 15 + swordOffset,
                 Translate.y + this.y + 60 - swordOffset)
             ctx.rotate(this.direction * rotateAngle - this.direction * Math.cos(this.action))
             ctx.fillRect(0, 0, 12, 85)
+
         }
-
-
-        //bow
-        if (this.bow) {
+        // bow
+        else if (this.bow) {
             ctx.strokeStyle = "brown"
             let bowOffset = this.direction == -1 ? 5 : -2
             let bowAngleX = this.bowUp ? Math.PI / 4 : Math.PI / 2
@@ -195,7 +195,7 @@ class Player implements GameObject {
         switch (evt.type) {
 
             case "keydown":
-                console.log(evt.keyCode)
+               // console.log(evt.keyCode)
 
                 switch (evt.keyCode) {
                     case 37: // left arrow
@@ -230,9 +230,16 @@ class Player implements GameObject {
                         break;
 
                     case 16: // Shift
-                        this.sword = !this.sword
-                        this.bow = !this.bow
+                        if (!this.weaponsDisabled) {
+                            this.sword = !this.sword
+                            this.bow = !this.bow
+                        }
                         break;
+
+                        case 82: //'R'
+                        if(this.hp<=0) {
+                            this.hp =3
+                        }
                 }
                 break;
 
