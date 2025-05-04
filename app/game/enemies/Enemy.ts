@@ -15,6 +15,8 @@ class Enemy implements GameObject {
     public color: string = "red"
     public hp: number = 1
 
+    public invinsibility: number = 0
+
     public vx: number = 2
     public vy: number = 0
     public action: number = 0
@@ -56,6 +58,8 @@ class Enemy implements GameObject {
 
 
     public update = () => {
+
+        if(this.invinsibility >0) this.invinsibility--
 
         this.vy += 1;
         if (this.vy > 15)

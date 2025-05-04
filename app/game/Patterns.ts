@@ -9,7 +9,7 @@ class Patterns {
 
     private static groundPattern: any = null;
     private static brickPattern: any = null;
-
+    private static caveEntrancePattern: any = null;
 
     private static zombiePattern: any = null;
     private static deadZombiePattern: any = null;
@@ -25,6 +25,12 @@ class Patterns {
 
     public static eyeballPattern: any = null;
     public static deadEyeballPattern: any = null;
+
+    public static ghostPattern: any = null;
+    public static deadGhostPattern: any = null;
+
+    public static spiderPattern: any = null;
+    public static deadSpiderPattern: any = null;
 
 
     //
@@ -84,6 +90,15 @@ class Patterns {
             Patterns.brickPattern = ctx.createPattern(image, "repeat");
         }
         return Patterns.brickPattern
+    }
+
+    public static getCaveEntrancePattern = (ctx: any) =>{
+        if (Patterns.caveEntrancePattern == null) {
+            let image = new Image()
+            image.src = 'images/cave_entrance.png'
+            Patterns.caveEntrancePattern = ctx.createPattern(image, "no-repeat");
+        }
+        return Patterns.caveEntrancePattern
     }
 
 
@@ -185,7 +200,43 @@ class Patterns {
         return Patterns.deadEyeballPattern
     }
 
+    public static getGhostPattern = (ctx: any) => {
+        if (Patterns.ghostPattern == null) {
+            let image = new Image()
+            image.src = 'images/ghost.png'
+            Patterns.ghostPattern = ctx.createPattern(image, "no-repeat")
 
+        }
+        return Patterns.ghostPattern
+    }
+
+    public static getDeadGhostPattern = (ctx: any) => {
+        if (Patterns.deadGhostPattern == null) {
+            let image = new Image()
+            image.src = 'images/ghost-dead.png'
+            Patterns.deadGhostPattern = ctx.createPattern(image, "no-repeat")
+        }
+        return Patterns.deadGhostPattern
+    }
+
+    public static getSpiderPattern = (ctx: any) => {
+        if (Patterns.spiderPattern == null) {
+            let image = new Image()
+            image.src = 'images/spider.png'
+            Patterns.spiderPattern = ctx.createPattern(image, "no-repeat")
+
+        }
+        return Patterns.spiderPattern
+    }
+
+    public static getDeadSpiderPattern = (ctx: any) => {
+        if (Patterns.deadSpiderPattern == null) {
+            let image = new Image()
+            image.src = 'images/spider-dead.png'
+            Patterns.deadSpiderPattern = ctx.createPattern(image, "no-repeat")
+        }
+        return Patterns.deadSpiderPattern
+    }
 
 }
 

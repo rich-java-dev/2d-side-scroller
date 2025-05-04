@@ -90,6 +90,7 @@ class Level {
 
             if (detectPlayerHitEnemy(this.player, enemy)) {
                 enemy.takeDamage()
+                enemy.invinsibility = 30
                 if (enemy.hp <= 0) {
                     let drops = enemy.dropItems()
                     this.items = [...this.items, ...drops]
@@ -115,7 +116,6 @@ class Level {
                 this.player.vy = 0
             }
 
-            detectPlayerHitEnemy(this.player, enemy)
         })
     }
 

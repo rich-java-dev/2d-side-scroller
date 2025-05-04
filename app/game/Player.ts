@@ -195,7 +195,7 @@ class Player implements GameObject {
         switch (evt.type) {
 
             case "keydown":
-               // console.log(evt.keyCode)
+                // console.log(evt.keyCode)
 
                 switch (evt.keyCode) {
                     case 37: // left arrow
@@ -236,9 +236,9 @@ class Player implements GameObject {
                         }
                         break;
 
-                        case 82: //'R'
-                        if(this.hp<=0) {
-                            this.hp =3
+                    case 82: //'R'
+                        if (this.hp <= 0) {
+                            this.hp = 3
                         }
                 }
                 break;

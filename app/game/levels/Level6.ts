@@ -78,7 +78,7 @@ class Level6 extends Level {
 
         this.goal = new Goal(2300, 570)
 
-        this.hint = "TAB toggles between Sword and Bow"
+        this.hint = "SHIFT toggles between Sword and Bow"
 
     }
 

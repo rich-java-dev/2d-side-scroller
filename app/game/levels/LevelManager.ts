@@ -8,6 +8,8 @@ import Level5 from './Level5'
 import Level6 from './Level6'
 import Level7 from './Level7'
 import Level8 from './Level8'
+import Level9 from './Level9'
+import Level10 from './Level10'
 
 import Sounds from '../Sounds'
 
@@ -32,8 +34,10 @@ class LevelManager {
             new Level4(),
             new Level5(),
             new Level6(),
-            new Level8(),
             new Level7(),
+            new Level8(),
+            new Level9(),
+            new Level10(),
         ]
     }
 

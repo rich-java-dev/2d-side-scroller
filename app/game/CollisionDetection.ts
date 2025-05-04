@@ -20,7 +20,8 @@ const detectEnemyPlayerCollision = (o1: Player, o2: Enemy): boolean => {
 
 
 const detectPlayerHitEnemy = (o1: Player, o2: Enemy): boolean => {
-    return (o1.action > 0
+    return (o2.invinsibility == 0
+        && o1.action > 0
         && (o2.x < o1.x + o1.direction * 80 || o2.x < o1.x)
         && o2.x + o2.width > o1.x + o1.width + o1.direction * 80
         && o1.y + o1.height > o2.y
